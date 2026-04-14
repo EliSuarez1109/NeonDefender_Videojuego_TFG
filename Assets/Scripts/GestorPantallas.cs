@@ -146,33 +146,34 @@ public class GestorPantallas : MonoBehaviour
 
     // --- LÓGICA DE HISTORIAL (TARJETAS) ---
 
-    private void GenerarDatosDePrueba()
+private void GenerarDatosDePrueba()
     {
-        // 1. Limpiamos la caja por si ya habíamos entrado antes
-        foreach (Transform hijo in contenedorContent)
+        // 1. Limpiamos la caja
+        for (int i = contenedorContent.childCount - 1; i >= 0; i--)
         {
-            Destroy(hijo.gameObject);
+            Transform hijo = contenedorContent.GetChild(i);
+            hijo.SetParent(null); 
+            Destroy(hijo.gameObject); 
         }
 
         // 2. Creamos 5 partidas falsas
         for (int i = 0; i < 5; i++)
         {
-            // 1. Clonar (el 'false' mantiene las proporciones del UI)
             GameObject nuevaTarjeta = Instantiate(prefabTarjeta, contenedorContent, false);
+            nuevaTarjeta.transform.localScale = Vector3.one; 
+            nuevaTarjeta.transform.localPosition = new Vector3(nuevaTarjeta.transform.localPosition.x, nuevaTarjeta.transform.localPosition.y, 0f); 
 
-            // 2. FORZAR TAMAÑO Y POSICIÓN (¡Esto pintará la tarjeta!)
-            nuevaTarjeta.transform.localScale = Vector3.one; // Fuerza la escala a 1,1,1
-            nuevaTarjeta.transform.localPosition = new Vector3(nuevaTarjeta.transform.localPosition.x, nuevaTarjeta.transform.localPosition.y, 0f); // Fuerza la Z a 0
-
-            // 3. Obtenemos su cerebro
             TarjetaPartida scriptTarjeta = nuevaTarjeta.GetComponent<TarjetaPartida>();
 
-            // 4. Inventamos datos y los mandamos
+            // 3. Inventamos ORO, FECHA y RESULTADO
             string resultadoFalso = (Random.value > 0.5f) ? "Victoria" : "Derrota";
-            string fechaFalsa = "13/04/2026";
-            string duracionFalsa = Random.Range(5, 25).ToString() + " min";
+            string fechaFalsa = "14/04/2026";
+            
+            // Generamos oro aleatorio en lugar de minutos (ej. 150 a 2000)
+            string oroFalso = Random.Range(150, 2000).ToString();
 
-            scriptTarjeta.ConfigurarTarjeta(duracionFalsa, fechaFalsa, resultadoFalso);
+            // 4. Mandamos los datos limpios a la tarjeta
+            scriptTarjeta.ConfigurarTarjeta(oroFalso, fechaFalsa, resultadoFalso);
         }
     }
 

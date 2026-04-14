@@ -1,28 +1,34 @@
 using UnityEngine;
-using TMPro; // Necesario para los textos
+using TMPro;
 
 public class TarjetaPartida : MonoBehaviour
 {
-    [Header("Textos de la Interfaz")]
-    public TMP_Text txtDuracion;
+    [Header("Textos de la UI")]
+    public TMP_Text txtOro;       
     public TMP_Text txtFecha;
     public TMP_Text txtResultado;
 
-    // Esta función la llamaremos desde el Gestor para rellenar los datos
-    public void ConfigurarTarjeta(string duracion, string fecha, string resultado)
+    public void ConfigurarTarjeta(string oro, string fecha, string resultado)
     {
-        txtDuracion.text = "Duración: " + duracion;
-        txtFecha.text = "Fecha: " + fecha;
+        // 1. Asignamos los textos limpios (sin "Fecha:" ni nada extra)
+        txtOro.text = oro;
+        txtFecha.text = fecha;
         txtResultado.text = resultado;
 
-        // Pequeño detalle visual: Cambiar color si es victoria o derrota
-        if (resultado == "Victoria")
+        // 2. Aplicamos los colores NEÓN
+        if(resultado == "Victoria")
         {
-            txtResultado.color = Color.green; // O tu color neón verde
+            // Verde Neón (#39FF14)
+            Color colorVerdeNeon;
+            ColorUtility.TryParseHtmlString("#39FF14", out colorVerdeNeon);
+            txtResultado.color = colorVerdeNeon;
         }
         else
         {
-            txtResultado.color = Color.red; // O tu color neón rojo
+            // Rojo Neón (#FF3131)
+            Color colorRojoNeon;
+            ColorUtility.TryParseHtmlString("#FF3131", out colorRojoNeon);
+            txtResultado.color = colorRojoNeon;
         }
     }
 }
