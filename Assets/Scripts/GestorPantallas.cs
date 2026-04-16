@@ -40,8 +40,9 @@ public class GestorPantallas : MonoBehaviour
         pantallaRegistro.SetActive(true);
     }
 
-    public void IrAInicioSesion()
+public void IrAInicioSesion()
     {
+        Debug.Log("¡El botón ha hecho clic y ha llamado a la función!"); // <--- AÑADE ESTA LÍNEA
         DesactivarTodasLasPantallas();
         pantallaInicioSesion.SetActive(true);
     }
