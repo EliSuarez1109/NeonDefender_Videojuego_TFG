@@ -2,95 +2,147 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using TMPro;
 
+// Creamos un "molde" para guardar los datos de cualquier torre
+[System.Serializable] 
+public class DatosTorre
+{
+    public string nombre = "Nueva Torre"; // Para el texto del botón
+    public GameObject prefabReal;
+    public GameObject prefabFantasma;
+    public int costeActual = 200;
+    public float multiplicadorCoste = 1.05f;
+    public TextMeshProUGUI textoBoton;
+}
+
 public class GestorTorres : MonoBehaviour
 {
+    [Header("Catálogo de Torres")]
+    [Tooltip("Añade aquí todas las torres que quieras que tenga el juego")]
+    public DatosTorre[] catalogoTorres; 
+
     [Header("Configuración de Construcción")]
-    public GameObject torrePrefab;
     public LayerMask capasBloqueadas;
+    public float tamañoCasilla = 100f; 
+    public float offsetX = 50f;      
+    public float offsetY = 50f;      
 
-    [Header("Economía Dinámica")]
-    public int costeActualTorre = 200;
-    public float multiplicadorCoste = 1.05f;
-    public TextMeshProUGUI textoBotonTorre;
-
-    [Header("Ajuste de Cuadrícula")]
-    public float tamañoCasilla = 100f; // Ahora la matemática sabe que tus cuadrados son gigantes
-    public float offsetX = 50f;      // La mitad de 100 (para ir al centro)
-    public float offsetY = 50f;      // La mitad de 100 (para ir al centro)
-
+    private DatosTorre torreAConstruir; // La torre que hemos elegido ahora mismo
+    private GameObject previewActual; 
     private bool enModoConstruccion = false;
 
     void Start()
     {
-        ActualizarTextoBoton();
+        ActualizarTodosLosBotones();
     }
 
-    public void ActivarModoConstruccion()
+    // ¡ESTA ES LA MAGIA NUEVA! 
+    // Recibe un número: 0 es la primera torre, 1 es la segunda, etc.
+    public void SeleccionarTorre(int indiceTorre)
     {
+        if (indiceTorre < 0 || indiceTorre >= catalogoTorres.Length) return;
+
+        // Si ya estábamos construyendo otra cosa, cancelamos
+        if (enModoConstruccion) CancelarConstruccion();
+
+        // Cargamos los datos de la torre que queremos
+        torreAConstruir = catalogoTorres[indiceTorre];
         enModoConstruccion = true;
+        
+        // Creamos su fantasma específico
+        if (torreAConstruir.prefabFantasma != null)
+        {
+            previewActual = Instantiate(torreAConstruir.prefabFantasma);
+        }
     }
 
     void Update()
     {
-        if (enModoConstruccion && Input.GetMouseButtonDown(0))
+        if (!enModoConstruccion || torreAConstruir == null) return;
+
+        Vector2 posSnapped = ObtenerPosicionCuadricula();
+        
+        if (previewActual != null)
+        {
+            previewActual.transform.position = posSnapped;
+        }
+
+        if (Input.GetMouseButtonDown(0))
         {
             if (EventSystem.current.IsPointerOverGameObject()) return;
-            IntentarConstruir();
+            IntentarConstruir(posSnapped);
+        }
+
+        if (Input.GetMouseButtonDown(1) || Input.GetKeyDown(KeyCode.Escape))
+        {
+            CancelarConstruccion();
         }
     }
 
-   void IntentarConstruir()
+    Vector2 ObtenerPosicionCuadricula()
     {
-        if (!GestorEconomia.instancia.PuedoComprar(costeActualTorre))
+        Vector2 posicionRaton = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        float xGrid = Mathf.Round((posicionRaton.x - offsetX) / tamañoCasilla) * tamañoCasilla + offsetX;
+        float yGrid = Mathf.Round((posicionRaton.y - offsetY) / tamañoCasilla) * tamañoCasilla + offsetY;
+        return new Vector2(xGrid, yGrid);
+    }
+
+    void IntentarConstruir(Vector2 posicion)
+    {
+        // Comprobamos el precio de la torre seleccionada
+        if (!GestorEconomia.instancia.PuedoComprar(torreAConstruir.costeActual))
         {
-            Debug.Log("No tienes suficiente oro.");
-            enModoConstruccion = false;
+            Debug.Log("No hay oro suficiente.");
+            CancelarConstruccion();
             return;
         }
 
-        Vector2 posicionRaton = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-
-        // --- MATEMÁTICA EXACTA PARA CASILLAS DE 100x100 ---
-        float xGrid = Mathf.Round((posicionRaton.x - offsetX) / tamañoCasilla) * tamañoCasilla + offsetX;
-        float yGrid = Mathf.Round((posicionRaton.y - offsetY) / tamañoCasilla) * tamañoCasilla + offsetY;
-        Vector2 posicionCuadricula = new Vector2(xGrid, yGrid);
-
-        // --- EL FILTRO PROFESIONAL (Ignorar Triggers) ---
-        // Cogemos TODO lo que hay en esa casilla
-        Collider2D[] obstaculos = Physics2D.OverlapCircleAll(posicionCuadricula, 10f, capasBloqueadas);
-        bool sitioOcupado = false;
+        Collider2D[] obstaculos = Physics2D.OverlapPointAll(posicion, capasBloqueadas);
+        bool ocupado = false;
 
         foreach (Collider2D col in obstaculos)
         {
-            // Si el collider NO es un trigger (es decir, es una base física sólida)
+            if (previewActual != null && col.gameObject == previewActual) continue;
+            
             if (!col.isTrigger) 
             {
-                sitioOcupado = true;
-                Debug.LogWarning("Bloqueado por la base sólida de: " + col.name);
-                break; // Paramos de buscar porque ya sabemos que está ocupado
+                ocupado = true;
+                Debug.LogWarning("Bloqueado por: " + col.name);
+                break;
             }
         }
 
-        if (!sitioOcupado)
+        if (!ocupado)
         {
-            GestorEconomia.instancia.RestarOro(costeActualTorre);
-            Instantiate(torrePrefab, posicionCuadricula, Quaternion.identity);
-            enModoConstruccion = false;
-            SubirPrecioTorre();
+            // Cobramos y construimos
+            GestorEconomia.instancia.RestarOro(torreAConstruir.costeActual);
+            Instantiate(torreAConstruir.prefabReal, posicion, Quaternion.identity);
+            
+            // Subimos el precio SOLO de la torre que acabamos de poner
+            torreAConstruir.costeActual = Mathf.RoundToInt(torreAConstruir.costeActual * torreAConstruir.multiplicadorCoste);
+            ActualizarTodosLosBotones();
+            
+            CancelarConstruccion(); 
         }
     }
 
-    void SubirPrecioTorre()
+    void CancelarConstruccion()
     {
-        costeActualTorre = Mathf.RoundToInt(costeActualTorre * multiplicadorCoste);
-        ActualizarTextoBoton();
+        enModoConstruccion = false;
+        torreAConstruir = null; // Vaciamos la selección
+        if (previewActual != null) 
+        {
+            Destroy(previewActual);
+        }
     }
 
-    public void ActualizarTextoBoton()
+    public void ActualizarTodosLosBotones()
     {
-        if (textoBotonTorre != null)
+        for (int i = 0; i < catalogoTorres.Length; i++)
         {
-            textoBotonTorre.text = "Crear Torre\n(" + costeActualTorre + " Oro)";
+            if (catalogoTorres[i].textoBoton != null)
+            {
+                catalogoTorres[i].textoBoton.text = catalogoTorres[i].nombre + "\n(" + catalogoTorres[i].costeActual + " Oro)";
+            }
         }
     }
 }

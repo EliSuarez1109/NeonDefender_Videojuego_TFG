@@ -4,9 +4,14 @@ public class LogicaBala : MonoBehaviour {
     public Transform objetivo;
     public float velocidad = 7f;
 
-    // Dependiendo de cómo dibujaste tu bala (mirando arriba, a la derecha...), 
-    // puede que necesites poner esto en -90, 0 o 90 para que la punta mire bien.
+    // Aquí iría tu variable compensacionRotacion...
     public float compensacionRotacion = -90f; 
+
+    // ✅ ¡PARTE NUEVA 1: LA VARIABLE! 
+    // Ahora puedes modificar este daño desde el Inspector de Unity.
+    // Por defecto es 1, pero puedes subirlo a 50, 100, etc.
+    [Header("Estadísticas del Proyectil")]
+    public float dano = 1f; 
 
     void Update() {
         if (objetivo == null) {
@@ -27,7 +32,9 @@ public class LogicaBala : MonoBehaviour {
             LogicaEnemigo scriptEnemigo = objetivo.GetComponent<LogicaEnemigo>();
             
             if (scriptEnemigo != null) {
-                scriptEnemigo.RecibirDaño(1f); 
+                // ✅ ¡PARTE NUEVA 2: USAR LA VARIABLE!
+                // Cambiamos el 1f fijo por el valor que le pongas a la variable "dano"
+                scriptEnemigo.RecibirDaño(dano); 
             }
 
             Destroy(gameObject);

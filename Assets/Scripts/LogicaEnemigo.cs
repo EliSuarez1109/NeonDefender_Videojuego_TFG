@@ -13,8 +13,12 @@ public class LogicaEnemigo : MonoBehaviour
     private float vidaActual;
     public Slider barraDeVida;    // Arrastra aquí el Slider que creaste sobre el enemigo
 
+    [Header("Ataque a Base")]
+    public float danoABase = 20f; // <--- NUEVO: Cuánto quita a la base
+
     [Header("Recompensa")]
     public int oroAlMorir = 2; // Por defecto 2 (para el normal)
+
     void Start()
     {
         // Al empezar, la vida está al máximo
@@ -38,7 +42,8 @@ public class LogicaEnemigo : MonoBehaviour
         // 1. Si ya llegamos al último punto, el enemigo desaparece (llegó a la base)
         if (indicePunto >= puntos.Length)
         {
-            // Aquí podrías restar vida a la BASE del jugador antes de destruir al enemigo
+            // Nota: El daño ahora se hace por colisión (OnTriggerEnter2D), 
+            // pero mantenemos esto por seguridad si el enemigo llega al final del array.
             Destroy(gameObject);
             return;
         }
@@ -76,8 +81,27 @@ public class LogicaEnemigo : MonoBehaviour
         Debug.Log("Enemigo destruido");
         
         // Avisamos al banco de que sume el dinero
-        GestorEconomia.instancia.SumarOro(oroAlMorir);
+        if(GestorEconomia.instancia != null)
+            GestorEconomia.instancia.SumarOro(oroAlMorir);
         
         Destroy(gameObject);
+    }
+
+    private void OnTriggerEnter2D(Collider2D colision)
+    {
+        // Esto saldrá en la consola SIEMPRE que toques CUALQUIER cosa
+        Debug.Log("He chocado con: " + colision.name);
+
+        if (colision.CompareTag("Base"))
+        {
+            Debug.Log("¡Es la base! Intentando quitar vida...");
+            BasePrincipal baseScript = colision.GetComponent<BasePrincipal>();
+            
+            if (baseScript != null)
+            {
+                baseScript.RecibirDano(danoABase);
+                Destroy(gameObject);
+            }
+        }
     }
 }
