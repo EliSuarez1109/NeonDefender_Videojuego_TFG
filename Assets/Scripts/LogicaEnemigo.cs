@@ -8,13 +8,16 @@ public class LogicaEnemigo : MonoBehaviour
     public float velocidad = 30f;
     private int indicePunto = 0;
 
+    // --- NUEVA VARIABLE PROTEGIDA PARA LA TESLA ---
+    private float velocidadOriginal = -1f; 
+
     [Header("Configuración de Vida")]
     public float vidaMax = 3f;
     private float vidaActual;
     public Slider barraDeVida;    // Arrastra aquí el Slider que creaste sobre el enemigo
 
     [Header("Ataque a Base")]
-    public float danoABase = 20f; // <--- NUEVO: Cuánto quita a la base
+    public float danoABase = 20f; // Cuánto quita a la base
 
     [Header("Recompensa")]
     public int oroAlMorir = 2; // Por defecto 2 (para el normal)
@@ -39,11 +42,9 @@ public class LogicaEnemigo : MonoBehaviour
 
     void MoverEnemigo()
     {
-        // 1. Si ya llegamos al último punto, el enemigo desaparece (llegó a la base)
+        // 1. Si ya llegamos al último punto, el enemigo desaparece
         if (indicePunto >= puntos.Length)
         {
-            // Nota: El daño ahora se hace por colisión (OnTriggerEnter2D), 
-            // pero mantenemos esto por seguridad si el enemigo llega al final del array.
             Destroy(gameObject);
             return;
         }
@@ -58,7 +59,7 @@ public class LogicaEnemigo : MonoBehaviour
         }
     }
 
-    // Esta función la llama la BALA cuando impacta
+    // Esta función la llama la BALA o la TORRE TESLA cuando impacta
     public void RecibirDaño(float cantidad)
     {
         vidaActual -= cantidad;
@@ -78,23 +79,19 @@ public class LogicaEnemigo : MonoBehaviour
 
     void Morir()
     {
-        Debug.Log("Enemigo destruido");
-        
         // Avisamos al banco de que sume el dinero
         if(GestorEconomia.instancia != null)
+        {
             GestorEconomia.instancia.SumarOro(oroAlMorir);
-        
+        }
+            
         Destroy(gameObject);
     }
 
     private void OnTriggerEnter2D(Collider2D colision)
     {
-        // Esto saldrá en la consola SIEMPRE que toques CUALQUIER cosa
-        Debug.Log("He chocado con: " + colision.name);
-
         if (colision.CompareTag("Base"))
         {
-            Debug.Log("¡Es la base! Intentando quitar vida...");
             BasePrincipal baseScript = colision.GetComponent<BasePrincipal>();
             
             if (baseScript != null)
@@ -102,6 +99,27 @@ public class LogicaEnemigo : MonoBehaviour
                 baseScript.RecibirDano(danoABase);
                 Destroy(gameObject);
             }
+        }
+    }
+
+    // --- SISTEMA DE RALENTIZACIÓN (BLINDADO) ---
+    public void AlterarVelocidad(float multiplicador)
+    {
+        // Si es la primera vez que entramos, guardamos la velocidad real que tenga ahora mismo
+        if (velocidadOriginal == -1f) 
+        {
+            velocidadOriginal = velocidad;
+        }
+        
+        velocidad = velocidadOriginal * multiplicador;
+    }
+
+    public void RestaurarVelocidad()
+    {
+        // Solo restauramos si alguna vez se guardó una velocidad original
+        if (velocidadOriginal != -1f)
+        {
+            velocidad = velocidadOriginal;
         }
     }
 }
