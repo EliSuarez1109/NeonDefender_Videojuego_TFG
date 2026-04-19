@@ -13,6 +13,7 @@ public class GestorPantallas : MonoBehaviour
     public GameObject pantallaMenu;
     public GameObject pantallaHistorial;
     public GameObject pantallaEstadisticas;
+    public GameObject pantallaSeleccionMapa; 
 
     [Header("Campos de Texto (Inputs)")]
     public TMP_InputField userLogin;
@@ -79,6 +80,7 @@ public void IrAInicioSesion()
         pantallaMenu.SetActive(false);
         pantallaHistorial.SetActive(false);
         pantallaEstadisticas.SetActive(false);
+        pantallaSeleccionMapa.SetActive(false);
     }
 
     // --- LÓGICA DE AWS ---
@@ -95,10 +97,10 @@ public void IrAInicioSesion()
         IrAInicioSesion(); // Salto directo
     }
 
-    public void ClickJugar()
+public void ClickJugar()
 {
-    // Carga la escena de tu juego. Pon el nombre EXACTO de tu escena de las torres.
-    SceneManager.LoadScene("Juego"); 
+    DesactivarTodasLasPantallas();
+    pantallaSeleccionMapa.SetActive(true); // Abre el carrusel
 }
 
     /*
