@@ -52,4 +52,5 @@ public class AdministradorNivel : MonoBehaviour
         pantallaEstadisticas.SetActive(false); // Apagamos las estadísticas
         pantallaFinJuego.SetActive(true);      // Encendemos de nuevo la derrota
     }
+
 }
