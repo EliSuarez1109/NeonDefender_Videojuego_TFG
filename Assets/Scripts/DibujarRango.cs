@@ -3,53 +3,82 @@ using UnityEngine;
 [RequireComponent(typeof(LineRenderer))]
 public class DibujarRango : MonoBehaviour
 {
-    public float radio = 8f; 
-    public float grosorLinea = 0.5f; 
-    public int suavidad = 64; // Más puntos = circunferencia más perfecta
-    public Color colorNeon = new Color(0, 1, 1, 0.5f); // Cian transparente
+    [Header("Forma del Rango")]
+    public bool esCuadrado = false; // ✅ NUEVO: Activa esto para la Torre Tesla
 
-    private LineRenderer lr;
+    [Header("Ajustes Visuales")]
+    public float radio = 12f;
+    public float grosorLinea = 0.2f;
+    public int suavidad = 60;
+    public Color colorNeon = Color.cyan;
+
+    private LineRenderer lineRenderer;
 
     void Awake()
     {
-        lr = GetComponent<LineRenderer>();
-        ConfigurarLineRenderer();
+        lineRenderer = GetComponent<LineRenderer>();
+        Dibujar();
     }
 
-    void Start()
+    // OnValidate hace que el rango se actualice en tiempo real en la escena de Unity 
+    // mientras cambias los valores en el Inspector, sin tener que darle a Play.
+    void OnValidate()
     {
-        DibujarCircunferencia();
+        if (lineRenderer == null) lineRenderer = GetComponent<LineRenderer>();
+        Dibujar();
     }
 
-    // Llamamos a esto si el radio cambia (por ejemplo, al mejorar la torre)
-    [ContextMenu("Actualizar Dibujo")]
-    public void DibujarCircunferencia()
+    public void Dibujar()
     {
-        lr.positionCount = suavidad + 1;
-        float anguloRecorrido = 0f;
+        if (lineRenderer == null) return;
 
-        for (int i = 0; i <= suavidad; i++)
+        // Le pasamos tus ajustes al Line Renderer
+        lineRenderer.startWidth = grosorLinea;
+        lineRenderer.endWidth = grosorLinea;
+        lineRenderer.startColor = colorNeon;
+        lineRenderer.endColor = colorNeon;
+        
+        // Vital para que el rango se cierre perfectamente
+        lineRenderer.loop = true; 
+        
+        // Vital para que el holograma se mueva con el ratón al construir
+        lineRenderer.useWorldSpace = false; 
+
+        if (esCuadrado)
         {
-            // Trigonometría para posicionar los puntos en el borde del radio
-            float x = Mathf.Cos(Mathf.Deg2Rad * anguloRecorrido) * radio;
-            float y = Mathf.Sin(Mathf.Deg2Rad * anguloRecorrido) * radio;
-
-            lr.SetPosition(i, new Vector3(x, y, 0));
-            anguloRecorrido += (360f / suavidad);
+            GenerarPuntosCuadrado();
+        }
+        else
+        {
+            GenerarPuntosCirculo();
         }
     }
 
-    void ConfigurarLineRenderer()
+    void GenerarPuntosCirculo()
     {
-        lr.useWorldSpace = false; // IMPORTANTE: Para que se mueva pegado a la torre
-        lr.startWidth = grosorLinea;
-        lr.endWidth = grosorLinea;
-        lr.loop = true; // Cierra el círculo
-        lr.sortingOrder = 10; // Por encima del mapa
-        
-        // Material para que no sea un bloque sólido
-        lr.material = new Material(Shader.Find("Sprites/Default"));
-        lr.startColor = colorNeon;
-        lr.endColor = colorNeon;
+        lineRenderer.positionCount = suavidad;
+        float angulo = 0f;
+
+        for (int i = 0; i < suavidad; i++)
+        {
+            // Trigonometría básica para el círculo
+            float x = Mathf.Sin(Mathf.Deg2Rad * angulo) * radio;
+            float y = Mathf.Cos(Mathf.Deg2Rad * angulo) * radio;
+
+            lineRenderer.SetPosition(i, new Vector3(x, y, 0f));
+            angulo += (360f / suavidad);
+        }
+    }
+
+    void GenerarPuntosCuadrado()
+    {
+        // Un cuadrado solo necesita 4 esquinas
+        lineRenderer.positionCount = 4;
+
+        // El "radio" en un cuadrado es la distancia del centro al borde
+        lineRenderer.SetPosition(0, new Vector3(-radio, -radio, 0f)); // Abajo Izquierda
+        lineRenderer.SetPosition(1, new Vector3(-radio, radio, 0f));  // Arriba Izquierda
+        lineRenderer.SetPosition(2, new Vector3(radio, radio, 0f));   // Arriba Derecha
+        lineRenderer.SetPosition(3, new Vector3(radio, -radio, 0f));  // Abajo Derecha
     }
 }

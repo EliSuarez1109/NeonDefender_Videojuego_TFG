@@ -606,4 +606,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 594083b4a91c77c4fb0df958de71fd65, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RotacionVisual
-  velocidadGiro: 360
+  velocidadGiro: -360
