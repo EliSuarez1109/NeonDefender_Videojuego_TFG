@@ -25,7 +25,7 @@ Transform:
   m_GameObject: {fileID: 1742783276891462610}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.02, y: 1.11, z: 0}
+  m_LocalPosition: {x: -0.02, y: -1.34, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -345,7 +345,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 10
   m_MaskInteraction: 0
-  m_Sprite: {fileID: 9035582631910568595, guid: 75d91ae4d4225f448b7f78d992a7627d, type: 3}
+  m_Sprite: {fileID: -3904778787571174162, guid: a11882ab3244a6a439782b9b6ba46812, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -407,7 +407,7 @@ MonoBehaviour:
   puntoDeDisparo: {fileID: 7865339879541028652}
   balaPrefab: {fileID: 6614674476980737235, guid: d9efbd3de41cf114ab03dd2d7719b8f7, type: 3}
   cadenciaDisparo: 1
-  compensacionRotacion: -90
+  compensacionRotacion: 90
   enemigosEnRango: []
 --- !u!61 &4113843926740437166
 BoxCollider2D:
@@ -447,7 +447,7 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 3.8600001, y: 3.8600001}
+    oldSize: {x: 3.83, y: 3.84}
     newSize: {x: 1, y: 1}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -494,7 +494,7 @@ Transform:
   m_GameObject: {fileID: 9006693342743176364}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.04, y: 0.364, z: 0}
+  m_LocalPosition: {x: 0, y: -0.2, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -550,7 +550,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 11
   m_MaskInteraction: 0
-  m_Sprite: {fileID: -4735916253211479811, guid: 5611a9d3320248d4a978ef5e40501d8d, type: 3}
+  m_Sprite: {fileID: 5225540213606490102, guid: 98d71fc803c93f54a9693ef6c7ce5832, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
