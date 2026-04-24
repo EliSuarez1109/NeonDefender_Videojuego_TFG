@@ -493,10 +493,10 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
-  velocidad: 100
-  vidaMax: 6
+  velocidad: 150
+  vidaMax: 350
   barraDeVida: {fileID: 2404023603581390612}
-  danoABase: 30
+  danoABase: 200
   oroAlMorir: 300
 --- !u!50 &3231253195543541612
 Rigidbody2D:

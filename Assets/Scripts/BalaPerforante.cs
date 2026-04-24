@@ -9,9 +9,13 @@ public class BalaPerforante : MonoBehaviour
     public float tiempoDeVida = 5f; 
     public float compensacionRotacion = -90f;
 
-    // ✅ ¡PARTE NUEVA! Variables para el daño continuo
     [Header("Efecto Daño Continuo")]
     public bool aplicaDañoContinuo = false; 
+    
+    // ✅ ¡AQUÍ ESTÁ TU CHECKBOX!
+    [Tooltip("Si se marca, cada bala suma un veneno extra. Si se desmarca, solo reinicia el reloj del veneno.")]
+    public bool seAcumulaElDaño = false; 
+    
     public float danoPorSegundo = 2f;
     public float duracionEfecto = 10f;
 
@@ -44,13 +48,13 @@ public class BalaPerforante : MonoBehaviour
                 // 1. Daño del impacto inicial
                 enemigo.RecibirDaño(dano);
 
-                // ✅ 2. ¡NUEVO! Aplicar daño continuo si la casilla está marcada
+                // 2. Aplicar daño continuo pasándole la nueva Checkbox
                 if (aplicaDañoContinuo)
                 {
-                    enemigo.AplicarDañoContinuo(danoPorSegundo, duracionEfecto);
+                    enemigo.AplicarDañoContinuo(danoPorSegundo, duracionEfecto, seAcumulaElDaño);
                 }
 
-                // 3. Lo anotamos en la lista negra para no volver a darle
+                // 3. Lo anotamos en la lista negra para no volver a darle con ESTA misma bala
                 enemigosGolpeados.Add(colision.gameObject); 
                 
                 Debug.Log("Impacto perforante en: " + colision.name);

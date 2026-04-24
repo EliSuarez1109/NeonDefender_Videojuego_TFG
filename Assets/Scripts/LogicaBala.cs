@@ -43,7 +43,7 @@ public class LogicaBala : MonoBehaviour {
 
                 // ✅ ¡PARTE NUEVA 3: DAÑO CONTINUO DE LA TORRE 4!
                 if (aplicaDañoContinuo) {
-                    scriptEnemigo.AplicarDañoContinuo(danoPorSegundo, duracionEfecto);
+                    scriptEnemigo.AplicarDañoContinuo(danoPorSegundo, duracionEfecto, true);
                 }
             }
 

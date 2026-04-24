@@ -180,9 +180,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BalaPerforante
   velocidad: 2000
-  dano: 2
+  dano: 30
   tiempoDeVida: 5
   compensacionRotacion: 90
   "aplicaDa\xF1oContinuo": 1
-  danoPorSegundo: 2
+  danoPorSegundo: 10
   duracionEfecto: 3

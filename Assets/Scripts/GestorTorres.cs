@@ -2,11 +2,10 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using TMPro;
 
-// Creamos un "molde" para guardar los datos de cualquier torre
 [System.Serializable] 
 public class DatosTorre
 {
-    public string nombre = "Nueva Torre"; // Para el texto del botón
+    public string nombre = "Nueva Torre"; 
     public GameObject prefabReal;
     public GameObject prefabFantasma;
     public int costeActual = 200;
@@ -17,7 +16,6 @@ public class DatosTorre
 public class GestorTorres : MonoBehaviour
 {
     [Header("Catálogo de Torres")]
-    [Tooltip("Añade aquí todas las torres que quieras que tenga el juego")]
     public DatosTorre[] catalogoTorres; 
 
     [Header("Configuración de Construcción")]
@@ -27,9 +25,22 @@ public class GestorTorres : MonoBehaviour
     public float offsetY = 50f;      
 
     [Header("Conexión al Registro de Partida")]
-    public PartidaJSON datosPartida; // <- Para registrar las torres construidas
+    public PartidaJSON datosPartida; 
 
-    private DatosTorre torreAConstruir; // La torre que hemos elegido ahora mismo
+    [Header("Interfaz de Venta")]
+    public GameObject botonVenderUI; 
+    public TextMeshProUGUI textoPrecioVenta; 
+    public Vector3 offsetBotonVenta = new Vector3(0f, -1.5f, 0f); 
+
+    // --- MAGIA NUEVA: Porcentaje de Venta ---
+    [Header("Economía de Venta")]
+    [Tooltip("100 = Devuelve el valor total. 50 = Devuelve la mitad.")]
+    [Range(0f, 100f)] 
+    public float porcentajeReembolso = 100f;
+    // ----------------------------------------
+
+    private DatosTorre torreAConstruir; 
+    private int indiceDeTorreAConstruir; 
     private GameObject previewActual; 
     private bool enModoConstruccion = false;
 
@@ -38,20 +49,16 @@ public class GestorTorres : MonoBehaviour
         ActualizarTodosLosBotones();
     }
 
-    // ¡ESTA ES LA MAGIA NUEVA! 
-    // Recibe un número: 0 es la primera torre, 1 es la segunda, etc.
     public void SeleccionarTorre(int indiceTorre)
     {
         if (indiceTorre < 0 || indiceTorre >= catalogoTorres.Length) return;
 
-        // Si ya estábamos construyendo otra cosa, cancelamos
         if (enModoConstruccion) CancelarConstruccion();
 
-        // Cargamos los datos de la torre que queremos
         torreAConstruir = catalogoTorres[indiceTorre];
+        indiceDeTorreAConstruir = indiceTorre; 
         enModoConstruccion = true;
         
-        // Creamos su fantasma específico
         if (torreAConstruir.prefabFantasma != null)
         {
             previewActual = Instantiate(torreAConstruir.prefabFantasma);
@@ -60,6 +67,38 @@ public class GestorTorres : MonoBehaviour
 
     void Update()
     {
+        // --- MOSTRAR Y POSICIONAR EL BOTÓN DE VENDER ---
+        if (botonVenderUI != null)
+        {
+            if (SeleccionTorre.torreSeleccionadaActual != null)
+            {
+                botonVenderUI.SetActive(true);
+                
+                // Calculamos el precio en tiempo real basado en la tienda, no en la torre
+                if (textoPrecioVenta != null) 
+                {
+                    DatosTorre datosTorreSeleccionada = catalogoTorres[SeleccionTorre.torreSeleccionadaActual.indiceCatalogo];
+                    
+                    // 1. Averiguamos cuánto costó la última que se puso
+                    int valorUltimaTorre = Mathf.RoundToInt(datosTorreSeleccionada.costeActual / datosTorreSeleccionada.multiplicadorCoste);
+                    
+                    // 2. Le aplicamos tu porcentaje (ej: el 75% de 1000)
+                    int valorReembolso = Mathf.RoundToInt(valorUltimaTorre * (porcentajeReembolso / 100f));
+                    
+                    textoPrecioVenta.text = "Vender\n(+" + valorReembolso + " Oro)";
+                }
+
+                Vector3 posicionEnMundo = SeleccionTorre.torreSeleccionadaActual.transform.position + offsetBotonVenta;
+                Vector3 posicionEnPantalla = Camera.main.WorldToScreenPoint(posicionEnMundo);
+                botonVenderUI.transform.position = posicionEnPantalla;
+            }
+            else
+            {
+                botonVenderUI.SetActive(false); 
+            }
+        }
+        // --------------------------------------------------
+
         if (!enModoConstruccion || torreAConstruir == null) return;
 
         Vector2 posSnapped = ObtenerPosicionCuadricula();
@@ -91,7 +130,6 @@ public class GestorTorres : MonoBehaviour
 
     void IntentarConstruir(Vector2 posicion)
     {
-        // Comprobamos el precio de la torre seleccionada
         if (!GestorEconomia.instancia.PuedoComprar(torreAConstruir.costeActual))
         {
             Debug.Log("No hay oro suficiente.");
@@ -116,28 +154,21 @@ public class GestorTorres : MonoBehaviour
 
         if (!ocupado)
         {
-            // Cobramos y construimos
             GestorEconomia.instancia.RestarOro(torreAConstruir.costeActual);
-            Instantiate(torreAConstruir.prefabReal, posicion, Quaternion.identity);
+            GameObject torreCreada = Instantiate(torreAConstruir.prefabReal, posicion, Quaternion.identity);
             
-            // Registramos la torre construida en los datos de la partida
+            // Seguimos pasándole el índice para saber de qué tipo es (Tesla, Láser, etc)
+            SeleccionTorre scriptSeleccion = torreCreada.GetComponentInChildren<SeleccionTorre>();
+            if (scriptSeleccion != null)
+            {
+                scriptSeleccion.ConfigurarDatosDeCompra(torreAConstruir.costeActual, indiceDeTorreAConstruir);
+            }
+
             if (datosPartida != null)
             {
                 datosPartida.RegistrarTorre(torreAConstruir.nombre);
-                Debug.Log("✓ Torre registrada: " + torreAConstruir.nombre + " | Total torres: " + datosPartida.torres.Count);
-                
-                // Mostrar el estado actual de las torres
-                foreach (DetalleTorre t in datosPartida.torres)
-                {
-                    Debug.Log("  └─ " + t.nombre + " x" + t.cantidad);
-                }
-            }
-            else
-            {
-                Debug.LogWarning("⚠ datosPartida no está asignado en GestorTorres");
             }
             
-            // Subimos el precio SOLO de la torre que acabamos de poner
             torreAConstruir.costeActual = Mathf.RoundToInt(torreAConstruir.costeActual * torreAConstruir.multiplicadorCoste);
             ActualizarTodosLosBotones();
             
@@ -148,7 +179,7 @@ public class GestorTorres : MonoBehaviour
     void CancelarConstruccion()
     {
         enModoConstruccion = false;
-        torreAConstruir = null; // Vaciamos la selección
+        torreAConstruir = null; 
         if (previewActual != null) 
         {
             Destroy(previewActual);
@@ -164,5 +195,31 @@ public class GestorTorres : MonoBehaviour
                 catalogoTorres[i].textoBoton.text = catalogoTorres[i].nombre + "\n(" + catalogoTorres[i].costeActual + " Oro)";
             }
         }
+    }
+
+    public void VenderTorreSeleccionada()
+    {
+        SeleccionTorre torre = SeleccionTorre.torreSeleccionadaActual;
+        if (torre == null) return;
+
+        DatosTorre datos = catalogoTorres[torre.indiceCatalogo];
+
+        // 1. Calculamos cuánto costó la ÚLTIMA torre de este tipo que pusimos
+        int valorUltimaTorre = Mathf.RoundToInt(datos.costeActual / datos.multiplicadorCoste);
+        
+        // 2. Le aplicamos el porcentaje de penalización por vender
+        int valorReembolso = Mathf.RoundToInt(valorUltimaTorre * (porcentajeReembolso / 100f));
+
+        // 3. Devolvemos el dinero al jugador
+        GestorEconomia.instancia.SumarOro(valorReembolso);
+
+        // 4. Bajamos el precio de la tienda al escalón anterior (sin importar el porcentaje de reembolso)
+        datos.costeActual = valorUltimaTorre;
+        
+        ActualizarTodosLosBotones();
+
+        torre.Deseleccionar(); 
+        SeleccionTorre.torreSeleccionadaActual = null; // Evitamos el NullReferenceException
+        Destroy(torre.gameObject); 
     }
 }

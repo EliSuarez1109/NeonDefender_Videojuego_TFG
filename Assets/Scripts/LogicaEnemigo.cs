@@ -1,33 +1,37 @@
 using UnityEngine;
-using UnityEngine.UI; // Necesario para que el script reconozca el componente Slider
+using UnityEngine.UI; 
 
 public class LogicaEnemigo : MonoBehaviour
 {
     [Header("Configuración de Movimiento")]
-    public Transform[] puntos;    // Arrastra aquí tus Waypoints (Punto1, Punto2...)
+    public Transform[] puntos;    
     public float velocidad = 30f;
     private int indicePunto = 0;
 
-    // --- NUEVA VARIABLE PROTEGIDA PARA LA TESLA ---
     private float velocidadOriginal = -1f; 
+
+    private int zonasTeslaPisadas = 0; 
+    private float danoTeslaActual = 0f; 
+    private float temporizadorChoqueTesla = 0f; 
 
     [Header("Configuración de Vida")]
     public float vidaMax = 3f;
     private float vidaActual;
-    public Slider barraDeVida;    // Arrastra aquí el Slider que creaste sobre el enemigo
+    public Slider barraDeVida;    
 
     [Header("Ataque a Base")]
-    public float danoABase = 20f; // Cuánto quita a la base
+    public float danoABase = 20f; 
 
     [Header("Recompensa")]
-    public int oroAlMorir = 2; // Por defecto 2 (para el normal)
+    public int oroAlMorir = 2; 
+
+    // --- NUEVA VARIABLE PARA EL VENENO ---
+    // Aquí el enemigo guardará el veneno único para poder borrarlo si le disparan otra vez
+    private Coroutine rutinaVenenoUnico; 
 
     void Start()
     {
-        // Al empezar, la vida está al máximo
         vidaActual = vidaMax;
-
-        // Configuramos la barrita visual
         if (barraDeVida != null)
         {
             barraDeVida.maxValue = vidaMax;
@@ -38,53 +42,48 @@ public class LogicaEnemigo : MonoBehaviour
     void Update()
     {
         MoverEnemigo();
+
+        if (zonasTeslaPisadas > 0)
+        {
+            temporizadorChoqueTesla += Time.deltaTime;
+            if (temporizadorChoqueTesla >= 1f)
+            {
+                RecibirDaño(danoTeslaActual);
+                temporizadorChoqueTesla = 0f; 
+            }
+        }
+        else
+        {
+            temporizadorChoqueTesla = 0f;
+        }
     }
 
     void MoverEnemigo()
     {
-        // 1. Si ya llegamos al último punto, el enemigo desaparece
         if (indicePunto >= puntos.Length)
         {
             Destroy(gameObject);
             return;
         }
 
-        // 2. Moverse hacia el punto actual
         transform.position = Vector2.MoveTowards(transform.position, puntos[indicePunto].position, velocidad * Time.deltaTime);
 
-        // 3. Si estamos muy cerca del punto, pasamos al siguiente
         if (Vector2.Distance(transform.position, puntos[indicePunto].position) < 0.1f)
         {
             indicePunto++;
         }
     }
 
-    // Esta función la llama la BALA o la TORRE TESLA cuando impacta
     public void RecibirDaño(float cantidad)
     {
         vidaActual -= cantidad;
-
-        // Actualizamos la barra visualmente
-        if (barraDeVida != null)
-        {
-            barraDeVida.value = vidaActual;
-        }
-
-        // Si la vida llega a cero, el enemigo muere
-        if (vidaActual <= 0)
-        {
-            Morir();
-        }
+        if (barraDeVida != null) barraDeVida.value = vidaActual;
+        if (vidaActual <= 0) Morir();
     }
 
-void Morir()
+    void Morir()
     {
-
-        if(GestorEconomia.instancia != null)
-        {
-            GestorEconomia.instancia.SumarOro(oroAlMorir);
-        }
-            
+        if(GestorEconomia.instancia != null) GestorEconomia.instancia.SumarOro(oroAlMorir);
         Destroy(gameObject);
     }
 
@@ -93,7 +92,6 @@ void Morir()
         if (colision.CompareTag("Base"))
         {
             BasePrincipal baseScript = colision.GetComponent<BasePrincipal>();
-            
             if (baseScript != null)
             {
                 baseScript.RecibirDano(danoABase);
@@ -102,48 +100,58 @@ void Morir()
         }
     }
 
-    // --- SISTEMA DE RALENTIZACIÓN (BLINDADO) ---
-    public void AlterarVelocidad(float multiplicador)
+    public void EntrarEnTesla(float multiplicador, float danoQueHaceLaTorre)
     {
-        // Si es la primera vez que entramos, guardamos la velocidad real que tenga ahora mismo
-        if (velocidadOriginal == -1f) 
-        {
-            velocidadOriginal = velocidad;
-        }
+        zonasTeslaPisadas++;
         
-        velocidad = velocidadOriginal * multiplicador;
-    }
-
-    public void RestaurarVelocidad()
-    {
-        // Solo restauramos si alguna vez se guardó una velocidad original
-        if (velocidadOriginal != -1f)
+        if (zonasTeslaPisadas == 1) 
         {
-            velocidad = velocidadOriginal;
+            if (velocidadOriginal == -1f) velocidadOriginal = velocidad;
+            velocidad = velocidadOriginal * multiplicador;
+            danoTeslaActual = danoQueHaceLaTorre;
+            temporizadorChoqueTesla = 0.9f; 
         }
     }
 
-    // --- SISTEMA DE DAÑO CONTINUO (TORRE 4) ---
-    public void AplicarDañoContinuo(float dps, float duracion)
+    public void SalirDeTesla()
     {
-        // Iniciamos el reloj de arena del daño
-        StartCoroutine(RutinaDañoContinuo(dps, duracion));
+        zonasTeslaPisadas--;
+        
+        if (zonasTeslaPisadas <= 0)
+        {
+            zonasTeslaPisadas = 0; 
+            if (velocidadOriginal != -1f) velocidad = velocidadOriginal;
+        }
+    }
+
+    // --- SISTEMA DE DAÑO CONTINUO (AHORA CON CHECKBOX) ---
+    public void AplicarDañoContinuo(float dps, float duracion, bool seAcumula)
+    {
+        if (seAcumula)
+        {
+            // Si SÍ se acumula, simplemente lanzamos uno nuevo sin importar los demás (Como estaba antes)
+            StartCoroutine(RutinaDañoContinuo(dps, duracion));
+        }
+        else
+        {
+            // Si NO se acumula, miramos si ya estaba envenenado...
+            if (rutinaVenenoUnico != null)
+            {
+                // Si lo estaba, paramos ese veneno viejo...
+                StopCoroutine(rutinaVenenoUnico);
+            }
+            // ...y lanzamos el nuevo, guardándolo en la memoria
+            rutinaVenenoUnico = StartCoroutine(RutinaDañoContinuo(dps, duracion));
+        }
     }
 
     private System.Collections.IEnumerator RutinaDañoContinuo(float dps, float duracion)
     {
         float tiempoPasado = 0f;
-
-        // Mientras no se acabe el tiempo...
         while (tiempoPasado < duracion)
         {
-            // Esperamos 1 segundo exacto
             yield return new WaitForSeconds(1f); 
-
-            // Le aplicamos el daño usando tu función que ya actualiza la barra y comprueba si muere
             RecibirDaño(dps);
-            
-            // Sumamos 1 segundo al contador
             tiempoPasado += 1f;
         }
     }

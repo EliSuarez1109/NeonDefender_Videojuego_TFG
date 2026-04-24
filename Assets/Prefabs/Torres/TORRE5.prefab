@@ -435,7 +435,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 3.8, y: 3.8}
   m_EdgeRadius: 0
 --- !u!114 &978148534806678770
 MonoBehaviour:
@@ -450,6 +450,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SeleccionTorre
   rangoVisual: {fileID: 5976725470429662122}
+  precioPagado: 0
+  indiceCatalogo: 0
 --- !u!114 &3158502845384010140
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -465,7 +467,7 @@ MonoBehaviour:
   prefabBala: {fileID: 6614674476980737235, guid: bf6f4e3e121b9054c93fa0409788d923, type: 3}
   puntoDisparo: {fileID: 7865339879541028652}
   "ca\xF1on": {fileID: 1157311590718106446}
-  cadencia: 1
+  cadencia: 0.75
   compensacionRotacion: 90
 --- !u!1 &9006693342743176364
 GameObject:

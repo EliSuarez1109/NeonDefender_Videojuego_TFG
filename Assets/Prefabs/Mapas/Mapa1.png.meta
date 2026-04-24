@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: ce6ae053a8ab90b4c94df56d1ae856fd
+guid: e5c72ba4d7cbfe942893b9495c9d21a8
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -6172873209103316115
-    second: MapaArregladoFRFR_0
+      213: -5840197071805953744
+    second: Mapa1Rework_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -113,7 +113,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: MapaArregladoFRFR_0
+      name: Mapa1Rework_0
       rect:
         serializedVersion: 2
         x: 0
@@ -128,8 +128,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: d6b0fd7858c855aa0800000000000000
-      internalID: -6172873209103316115
+      spriteID: 039cab4b4b373fea0800000000000000
+      internalID: -5840197071805953744
       vertices: []
       indices: 
       edges: []
@@ -148,7 +148,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      MapaArregladoFRFR_0: -6172873209103316115
+      Mapa1Rework_0: -5840197071805953744
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

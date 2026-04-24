@@ -453,7 +453,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 3.8, y: 3}
   m_EdgeRadius: 0
 --- !u!114 &978148534806678770
 MonoBehaviour:
@@ -468,6 +468,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SeleccionTorre
   rangoVisual: {fileID: 5976725470429662122}
+  precioPagado: 0
+  indiceCatalogo: 0
 --- !u!1 &9006693342743176364
 GameObject:
   m_ObjectHideFlags: 0
