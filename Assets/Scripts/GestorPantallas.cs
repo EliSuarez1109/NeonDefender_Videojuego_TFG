@@ -106,12 +106,12 @@ public void IrAInicioSesion()
 
     // --- LÓGICA DE AWS ---
 
-   /* public void ClickLogin()
+    public void ClickLoginrapido()
     {
         // Borra la línea de StartCoroutine(EnviarPeticion...);
         IrAMenuPrincipal(); // Salto directo
     }
-
+/*
     public void ClickRegistro()
     {
         // Borra la línea de StartCoroutine(EnviarPeticion...);
