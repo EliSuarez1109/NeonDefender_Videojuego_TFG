@@ -196,7 +196,7 @@ public class GestorTorres : MonoBehaviour
         {
             if (catalogoTorres[i].textoBoton != null)
             {
-                catalogoTorres[i].textoBoton.text = catalogoTorres[i].nombre + "\n(" + catalogoTorres[i].costeActual + " Oro)";
+                catalogoTorres[i].textoBoton.text = catalogoTorres[i].costeActual.ToString();
             }
         }
     }

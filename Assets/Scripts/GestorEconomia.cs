@@ -77,7 +77,7 @@ public class GestorEconomia : MonoBehaviour
     {
         if (textoOro != null)
         {
-            textoOro.text = "Oro: " + oroActual.ToString();
+            textoOro.text = oroActual.ToString();
         }
     }
 }
