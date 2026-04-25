@@ -923,7 +923,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1391725824}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: GestorTorres, Assembly-CSharp
         m_MethodName: SeleccionarTorre
         m_Mode: 3
@@ -3324,7 +3324,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1391725824}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: GestorTorres, Assembly-CSharp
         m_MethodName: SeleccionarTorre
         m_Mode: 3
@@ -4086,7 +4086,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1391725824}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: GestorTorres, Assembly-CSharp
         m_MethodName: SeleccionarTorre
         m_Mode: 3
@@ -6061,112 +6061,6 @@ MonoBehaviour:
   vidaMaxima: 1000
   barraDeVida: {fileID: 536652375}
   adminNivel: {fileID: 1309895164}
---- !u!1 &1391725821
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1391725825}
-  - component: {fileID: 1391725824}
-  - component: {fileID: 1391725822}
-  m_Layer: 0
-  m_Name: GameManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1391725822
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1391725821}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6abc5d36ed0c6d24ea4dba0c6dd139b1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::GestorEconomia
-  oroActual: 150215651
-  textoOro: {fileID: 0}
---- !u!114 &1391725824
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1391725821}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8eedbf0f7e055a04880583fc0217c15d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::GestorTorres
-  catalogoTorres:
-  - nombre: Torre1
-    prefabReal: {fileID: 8644672651147763296, guid: 7f1c1d731a95aeb4eae0e6aa2ea988f5, type: 3}
-    prefabFantasma: {fileID: 8644672651147763296, guid: e2bddcb92c2242e45b271e615ed0af56, type: 3}
-    costeActual: 200
-    multiplicadorCoste: 1.05
-    textoBoton: {fileID: 1713936505}
-  - nombre: Torre2
-    prefabReal: {fileID: 8644672651147763296, guid: 396b008cb826bef4a87ad19f7ea3857d, type: 3}
-    prefabFantasma: {fileID: 8644672651147763296, guid: a8e424d7e328eaf46af18efad5feafe9, type: 3}
-    costeActual: 500
-    multiplicadorCoste: 1.1
-    textoBoton: {fileID: 1018486156}
-  - nombre: Torre3
-    prefabReal: {fileID: 8644672651147763296, guid: 476aa136d4f722e438509ab91548309f, type: 3}
-    prefabFantasma: {fileID: 8644672651147763296, guid: eeb62be670233184bba72532eb76f461, type: 3}
-    costeActual: 1000
-    multiplicadorCoste: 1.1
-    textoBoton: {fileID: 263602057}
-  - nombre: Torre4
-    prefabReal: {fileID: 8644672651147763296, guid: 2b815d1effcc7ce4394e46a568e77733, type: 3}
-    prefabFantasma: {fileID: 8644672651147763296, guid: f5d72ac2b77536340aefb632dea44bb7, type: 3}
-    costeActual: 1100
-    multiplicadorCoste: 1.1
-    textoBoton: {fileID: 1943055849}
-  - nombre: Torre5
-    prefabReal: {fileID: 8644672651147763296, guid: 76f0bfe579edf1f428de917a363ffc96, type: 3}
-    prefabFantasma: {fileID: 8644672651147763296, guid: 95c3564ba51348044a2d6bd94fbb315b, type: 3}
-    costeActual: 1100
-    multiplicadorCoste: 1.1
-    textoBoton: {fileID: 1780956001}
-  - nombre: Torre6
-    prefabReal: {fileID: 8644672651147763296, guid: e8372b03e2212f64fb840b6a2b8a42fe, type: 3}
-    prefabFantasma: {fileID: 8644672651147763296, guid: c0278b952c8147a46ae61efc0ee8c864, type: 3}
-    costeActual: 1100
-    multiplicadorCoste: 1.1
-    textoBoton: {fileID: 2070091902}
-  capasBloqueadas:
-    serializedVersion: 2
-    m_Bits: 72
-  "tama\xF1oCasilla": 100
-  offsetX: 50
-  offsetY: 50.2
-  botonVenderUI: {fileID: 0}
-  textoPrecioVenta: {fileID: 0}
-  offsetBotonVenta: {x: 0, y: -1.5, z: 0}
-  porcentajeReembolso: 100
---- !u!4 &1391725825
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1391725821}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 500.04742, y: 199.67255, z: 0}
-  m_LocalScale: {x: 5.6272597, y: 5.678333, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1395916719
 GameObject:
   m_ObjectHideFlags: 0
@@ -6566,7 +6460,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1391725824}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: GestorTorres, Assembly-CSharp
         m_MethodName: SeleccionarTorre
         m_Mode: 3
@@ -6837,7 +6731,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1391725824}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: GestorTorres, Assembly-CSharp
         m_MethodName: SeleccionarTorre
         m_Mode: 3
@@ -8458,7 +8352,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1391725824}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: GestorTorres, Assembly-CSharp
         m_MethodName: SeleccionarTorre
         m_Mode: 3
@@ -9380,4 +9274,3 @@ SceneRoots:
   - {fileID: 1062398751}
   - {fileID: 221898426}
   - {fileID: 1365287730}
-  - {fileID: 1391725825}

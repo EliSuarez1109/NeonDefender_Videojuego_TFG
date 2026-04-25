@@ -79,9 +79,11 @@ void Start()
         string escenaACargar = mapasDisponibles[indiceActual].nombreEscenaUnity;
 
         dificultad = mapasDisponibles[indiceActual].nombreDificultad;
+
+        SceneManager.sceneLoaded += AlCargarEscena;
         
         Debug.Log("Cargando nivel: " + escenaACargar);
-        SceneManager.sceneLoaded += AlCargarEscena;
+        
         
         // Viajamos a la escena
         SceneManager.LoadScene(escenaACargar);

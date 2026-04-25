@@ -1925,6 +1925,60 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 8372767552802085241, guid: cb4f7326ab1734050b46188bd5b10f59, type: 3}
   m_PrefabInstance: {fileID: 811817422}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &874851439
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 874851441}
+  - component: {fileID: 874851440}
+  m_Layer: 0
+  m_Name: GestorDatoPartida
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &874851440
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 874851439}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e365a34f6487c5147a3915876b00b21a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GestorDatosPartida
+  datosPartida:
+    id_user: 0
+    estado: 
+    nivel: 
+    dano_total_infligido: 0
+    dano_total_recibido: 0
+    oro_ganado: 0
+    oro_gastado: 0
+    torres: []
+    enemigos: []
+--- !u!4 &874851441
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 874851439}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1118.7612, y: 401.37787, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &888532216 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 6498571558190088835, guid: 8faa04ec29b82447cb7eddd617bee41e, type: 3}
@@ -4257,7 +4311,7 @@ MonoBehaviour:
   txtDificultad: {fileID: 1903840972}
   mapasDisponibles:
   - nombreDificultad: "F\xE1cil"
-    imagenDelMapa: {fileID: -6172873209103316115, guid: ce6ae053a8ab90b4c94df56d1ae856fd, type: 3}
+    imagenDelMapa: {fileID: -5840197071805953744, guid: e5c72ba4d7cbfe942893b9495c9d21a8, type: 3}
     nombreEscenaUnity: Nivel1
   - nombreDificultad: Normal
     imagenDelMapa: {fileID: 6299396901515513514, guid: 3ffe0e6f6f4cdf94586fbe34f51ad6cf, type: 3}
@@ -5935,3 +5989,4 @@ SceneRoots:
   - {fileID: 952340265}
   - {fileID: 742075905}
   - {fileID: 1957816877}
+  - {fileID: 874851441}
