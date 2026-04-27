@@ -2722,7 +2722,7 @@ PrefabInstance:
       objectReference: {fileID: 2317475199118180843, guid: 62db79d7096a146c0884db11239f3cc1, type: 3}
     - target: {fileID: 3406114514911249143, guid: 4febd017c212645fa99e6aaabde65287, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: VolverAlMenuPrincipal
+      value: VolverAFinDePartida
       objectReference: {fileID: 0}
     - target: {fileID: 3406114514911249143, guid: 4febd017c212645fa99e6aaabde65287, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
