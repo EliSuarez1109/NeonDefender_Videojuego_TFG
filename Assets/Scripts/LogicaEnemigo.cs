@@ -49,7 +49,8 @@ public class LogicaEnemigo : MonoBehaviour
             if (temporizadorChoqueTesla >= 1f)
             {
                 RecibirDaño(danoTeslaActual);
-                temporizadorChoqueTesla = 0f; 
+                // Restamos 1 segundo exacto para mantener los milisegundos que nos hayamos pasado
+                temporizadorChoqueTesla -= 1f; 
             }
         }
         else
@@ -146,13 +147,25 @@ public class LogicaEnemigo : MonoBehaviour
     }
 
     private System.Collections.IEnumerator RutinaDañoContinuo(float dps, float duracion)
+{
+    float tiempoTotalPasado = 0f;
+    float cronometroInterno = 0f;
+
+    while (tiempoTotalPasado < duracion)
     {
-        float tiempoPasado = 0f;
-        while (tiempoPasado < duracion)
+        // Acumulamos el tiempo del frame actual
+        float delta = Time.deltaTime;
+        tiempoTotalPasado += delta;
+        cronometroInterno += delta;
+
+        // Cada vez que acumulamos 1 segundo...
+        if (cronometroInterno >= 1f)
         {
-            yield return new WaitForSeconds(1f); 
             RecibirDaño(dps);
-            tiempoPasado += 1f;
+            cronometroInterno -= 1f; // Restamos el segundo y mantenemos la precisión
         }
+
+        yield return null; // Esperamos al siguiente frame
     }
+}
 }

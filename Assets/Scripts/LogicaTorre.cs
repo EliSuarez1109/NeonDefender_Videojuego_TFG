@@ -24,11 +24,20 @@ public class LogicaTorre : MonoBehaviour {
         ActualizarObjetivo(); 
 
         if (objetivoActual != null) {
-            RotarHaciaObjetivo(); // <-- ¡Nueva función en acción!
+            RotarHaciaObjetivo();
 
             if (Time.time >= tiempoSiguienteDisparo) {
                 Disparar();
-                tiempoSiguienteDisparo = Time.time + cadenciaDisparo;
+                
+                // Le sumamos el tiempo normal para el siguiente disparo
+                tiempoSiguienteDisparo += cadenciaDisparo; 
+
+                // --- LA SOLUCIÓN AL DOBLE DISPARO ---
+                // Si aún con la suma seguimos por detrás del tiempo actual (porque estuvo inactiva mucho rato),
+                // forzamos a que el SIGUIENTE disparo ocurra exactamente dentro de '1 cadencia' a partir de ahora.
+                if (tiempoSiguienteDisparo < Time.time) {
+                    tiempoSiguienteDisparo = Time.time + cadenciaDisparo;
+                }
             }
         }
     }

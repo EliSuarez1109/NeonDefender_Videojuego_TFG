@@ -425,8 +425,8 @@ MonoBehaviour:
     m_Bits: 64
   tamanoCasilla: 100
   ordenVisualEfecto: 10
-  danoPorSegundo: 1
-  multiplicadorVelocidad: 0.5
+  danoPorSegundo: 5
+  multiplicadorVelocidad: 0.75
 --- !u!50 &4430459471251617511
 Rigidbody2D:
   serializedVersion: 5

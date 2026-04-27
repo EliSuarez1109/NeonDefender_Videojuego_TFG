@@ -20,12 +20,18 @@ public class LogicaTorre5 : MonoBehaviour
 
     void Update()
     {
-        // 1. Limpiamos la lista por si algún enemigo ha muerto mientras estaba en rango
-        // (Unity los destruye, así que se vuelven 'null' en nuestra lista)
+        // 1. Limpiamos la lista 
         enemigosEnRango.RemoveAll(enemigo => enemigo == null);
 
         // 2. El temporizador avanza siempre
         temporizador += Time.deltaTime;
+
+        // --- EL TOPE ANTI-AMETRALLADORA ---
+        // Si ya cargó la bala, no le dejamos acumular tiempo infinito. Se queda lista (al máximo).
+        if (temporizador > cadencia) 
+        {
+            temporizador = cadencia;
+        }
 
         // 3. Revisamos a quién disparar
         ActualizarObjetivo();
@@ -41,7 +47,9 @@ public class LogicaTorre5 : MonoBehaviour
             if (temporizador >= cadencia)
             {
                 Disparar();
-                temporizador = 0;
+                
+                // Restamos la cadencia para conservar los decimales sobrantes y ser precisos en x2
+                temporizador -= cadencia; 
             }
         }
     }

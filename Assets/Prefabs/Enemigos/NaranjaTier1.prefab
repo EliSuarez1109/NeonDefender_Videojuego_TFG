@@ -297,7 +297,7 @@ MonoBehaviour:
   vidaMax: 60
   barraDeVida: {fileID: 704051947671144105}
   danoABase: 50
-  oroAlMorir: 150
+  oroAlMorir: 10
 --- !u!50 &658251800166474911
 Rigidbody2D:
   serializedVersion: 5

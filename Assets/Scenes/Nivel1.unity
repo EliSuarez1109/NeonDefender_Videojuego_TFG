@@ -3205,8 +3205,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0bdda1c91d284824ca34e6e76d4198fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GeneradorEnemigos
-  enemigoNormalPrefab: {fileID: 2180232327059474889, guid: 8c93cf7b40b95444590cfa87f96a38af, type: 3}
-  enemigoFuertePrefab: {fileID: 2180232327059474889, guid: bc1bde4877da6fd44b7d4e4b1e48f3c1, type: 3}
   puntoDeSalida: {fileID: 1814834495}
   puntosCamino:
   - {fileID: 1814834495}
@@ -3218,8 +3216,83 @@ MonoBehaviour:
   - {fileID: 1407491790}
   - {fileID: 1562755065}
   - {fileID: 1351938704}
-  tiempoEntreNormales: 1.5
-  esperaParaElFuerte: 3
+  rondas:
+  - nombreRonda: Ronda 1
+    grupos:
+    - nombreGrupo: RosasTier1
+      prefabEnemigo: {fileID: 2180232327059474889, guid: 1afbe424d35e84248821968e9afecbb5, type: 3}
+      cantidad: 2
+      tiempoEntreEllos: 1.5
+      tiempoEsperaDespues: 0
+  - nombreRonda: Ronda 2
+    grupos:
+    - nombreGrupo: RosasTier1
+      prefabEnemigo: {fileID: 2180232327059474889, guid: 1afbe424d35e84248821968e9afecbb5, type: 3}
+      cantidad: 4
+      tiempoEntreEllos: 1.5
+      tiempoEsperaDespues: 0
+    - nombreGrupo: RosaTier2
+      prefabEnemigo: {fileID: 2180232327059474889, guid: 36ce8960ce9295d4e823d7d8554cdb54, type: 3}
+      cantidad: 1
+      tiempoEntreEllos: 1.5
+      tiempoEsperaDespues: 0
+  - nombreRonda: Ronda 3
+    grupos:
+    - nombreGrupo: RosasTier1
+      prefabEnemigo: {fileID: 2180232327059474889, guid: 1afbe424d35e84248821968e9afecbb5, type: 3}
+      cantidad: 3
+      tiempoEntreEllos: 1.5
+      tiempoEsperaDespues: 0
+    - nombreGrupo: RosaTier2
+      prefabEnemigo: {fileID: 2180232327059474889, guid: 36ce8960ce9295d4e823d7d8554cdb54, type: 3}
+      cantidad: 2
+      tiempoEntreEllos: 1.5
+      tiempoEsperaDespues: 0
+    - nombreGrupo: RosasTier1
+      prefabEnemigo: {fileID: 2180232327059474889, guid: 1afbe424d35e84248821968e9afecbb5, type: 3}
+      cantidad: 3
+      tiempoEntreEllos: 1.5
+      tiempoEsperaDespues: 0
+  - nombreRonda: Ronda 4
+    grupos:
+    - nombreGrupo: NaranjasTier1
+      prefabEnemigo: {fileID: 2180232327059474889, guid: bbe72bc9023cbe0449ead4daa2ca8bab, type: 3}
+      cantidad: 10
+      tiempoEntreEllos: 0.5
+      tiempoEsperaDespues: 0
+    - nombreGrupo: RosasTier1
+      prefabEnemigo: {fileID: 2180232327059474889, guid: 1afbe424d35e84248821968e9afecbb5, type: 3}
+      cantidad: 5
+      tiempoEntreEllos: 1.5
+      tiempoEsperaDespues: 0
+    - nombreGrupo: RosaTier2
+      prefabEnemigo: {fileID: 2180232327059474889, guid: 36ce8960ce9295d4e823d7d8554cdb54, type: 3}
+      cantidad: 1
+      tiempoEntreEllos: 0.5
+      tiempoEsperaDespues: 0
+    - nombreGrupo: RosasTier1
+      prefabEnemigo: {fileID: 2180232327059474889, guid: 1afbe424d35e84248821968e9afecbb5, type: 3}
+      cantidad: 5
+      tiempoEntreEllos: 1.5
+      tiempoEsperaDespues: 0
+    - nombreGrupo: NaranjasTier1
+      prefabEnemigo: {fileID: 2180232327059474889, guid: bbe72bc9023cbe0449ead4daa2ca8bab, type: 3}
+      cantidad: 10
+      tiempoEntreEllos: 0.5
+      tiempoEsperaDespues: 0
+  - nombreRonda: Ronda 5
+    grupos:
+    - nombreGrupo: VerdeTier1
+      prefabEnemigo: {fileID: 2180232327059474889, guid: 8c93cf7b40b95444590cfa87f96a38af, type: 3}
+      cantidad: 2
+      tiempoEntreEllos: 0.5
+      tiempoEsperaDespues: 0
+    - nombreGrupo: RosasTier2
+      prefabEnemigo: {fileID: 2180232327059474889, guid: 36ce8960ce9295d4e823d7d8554cdb54, type: 3}
+      cantidad: 3
+      tiempoEntreEllos: 0.5
+      tiempoEsperaDespues: 0
+  botonEmpezar: {fileID: 2091313628}
 --- !u!4 &2035053316
 Transform:
   m_ObjectHideFlags: 0
@@ -3329,7 +3402,7 @@ PrefabInstance:
       objectReference: {fileID: 2035053315}
     - target: {fileID: 5070931262595142274, guid: f4446724647dc4fe09acec9a4d91021b, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: EmpezarRonda
+      value: EmpezarSiguienteRonda
       objectReference: {fileID: 0}
     - target: {fileID: 5181302634474523314, guid: f4446724647dc4fe09acec9a4d91021b, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
@@ -3705,6 +3778,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 834eadcae9b30440a84e8009e5b8d70a, type: 3}
+--- !u!114 &2091313628 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5070931262595142274, guid: f4446724647dc4fe09acec9a4d91021b, type: 3}
+  m_PrefabInstance: {fileID: 2039785810}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Button
 --- !u!1 &2102244035 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3440356815479795792, guid: 834eadcae9b30440a84e8009e5b8d70a, type: 3}
@@ -3727,6 +3811,7 @@ GameObject:
   - component: {fileID: 2103929297}
   - component: {fileID: 2103929300}
   - component: {fileID: 2103929301}
+  - component: {fileID: 2103929302}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -3750,38 +3835,38 @@ MonoBehaviour:
   - nombre: Torre1
     prefabReal: {fileID: 8644672651147763296, guid: 7f1c1d731a95aeb4eae0e6aa2ea988f5, type: 3}
     prefabFantasma: {fileID: 8644672651147763296, guid: e2bddcb92c2242e45b271e615ed0af56, type: 3}
-    costeActual: 200
-    multiplicadorCoste: 1.05
+    costeActual: 100
+    multiplicadorCoste: 1.25
     textoBoton: {fileID: 1180676787}
   - nombre: Torre2
     prefabReal: {fileID: 8644672651147763296, guid: 396b008cb826bef4a87ad19f7ea3857d, type: 3}
     prefabFantasma: {fileID: 8644672651147763296, guid: a8e424d7e328eaf46af18efad5feafe9, type: 3}
     costeActual: 500
-    multiplicadorCoste: 1.1
+    multiplicadorCoste: 1.25
     textoBoton: {fileID: 1343835899}
   - nombre: Torre3
     prefabReal: {fileID: 8644672651147763296, guid: 476aa136d4f722e438509ab91548309f, type: 3}
     prefabFantasma: {fileID: 8644672651147763296, guid: eeb62be670233184bba72532eb76f461, type: 3}
-    costeActual: 1000
-    multiplicadorCoste: 1.1
+    costeActual: 2000
+    multiplicadorCoste: 1.25
     textoBoton: {fileID: 446392852}
   - nombre: Torre4
     prefabReal: {fileID: 8644672651147763296, guid: 2b815d1effcc7ce4394e46a568e77733, type: 3}
     prefabFantasma: {fileID: 8644672651147763296, guid: f5d72ac2b77536340aefb632dea44bb7, type: 3}
     costeActual: 1000
-    multiplicadorCoste: 1.1
+    multiplicadorCoste: 1.25
     textoBoton: {fileID: 470582990}
   - nombre: Torre5
     prefabReal: {fileID: 8644672651147763296, guid: 76f0bfe579edf1f428de917a363ffc96, type: 3}
     prefabFantasma: {fileID: 8644672651147763296, guid: 95c3564ba51348044a2d6bd94fbb315b, type: 3}
     costeActual: 1000
-    multiplicadorCoste: 1.1
+    multiplicadorCoste: 1.25
     textoBoton: {fileID: 136568446}
   - nombre: Torre6
     prefabReal: {fileID: 8644672651147763296, guid: e8372b03e2212f64fb840b6a2b8a42fe, type: 3}
     prefabFantasma: {fileID: 8644672651147763296, guid: c0278b952c8147a46ae61efc0ee8c864, type: 3}
     costeActual: 1000
-    multiplicadorCoste: 1.1
+    multiplicadorCoste: 1.25
     textoBoton: {fileID: 998035072}
   capasBloqueadas:
     serializedVersion: 2
@@ -3820,7 +3905,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6abc5d36ed0c6d24ea4dba0c6dd139b1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GestorEconomia
-  oroActual: 150215651
+  oroActual: 225
   textoOro: {fileID: 1841027398}
 --- !u!114 &2103929301
 MonoBehaviour:
@@ -3835,6 +3920,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ControladorTiempo
   textoBoton: {fileID: 1739141386}
+--- !u!114 &2103929302
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2103929296}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b169f81226de33f4799055f647ac2748, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CodigoSecreto
+  oroDeRecompensa: 1000000
+  secuenciaSecreta: 11010000110100001201000012010000140100001301000014010000130100006200000061000000
 --- !u!1 &2114887735
 GameObject:
   m_ObjectHideFlags: 0
