@@ -6,17 +6,28 @@ public class AdministradorNivel : MonoBehaviour
 {
     [Header("Pantallas")]
     public GameObject pantallaFinJuego; 
-    public GameObject pantallaEstadisticas; // <- ¡NUEVO! Conectamos la pantalla aquí
+    public GameObject pantallaEstadisticas; // Conectamos la pantalla aquí
 
     [Header("Textos")]
     public TMP_Text txtResultado;       
 
+    // Se llama cuando los enemigos destruyen tu torre
     public void MostrarDerrota()
     {
         pantallaFinJuego.SetActive(true);
         pantallaEstadisticas.SetActive(false); // Nos aseguramos de que estadísticas esté apagada
         txtResultado.text = "¡BASE DESTRUIDA!";
         txtResultado.color = Color.red; 
+        Time.timeScale = 0f; // El juego se congela
+    }
+
+    // --- ¡NUEVA FUNCIÓN PARA EL BOTÓN DE SALIR/RENDIRSE! ---
+    public void Rendirse()
+    {
+        pantallaFinJuego.SetActive(true);
+        pantallaEstadisticas.SetActive(false); // Nos aseguramos de que estadísticas esté apagada
+        txtResultado.text = "¡TE HAS RENDIDO!"; // Cambiamos el mensaje
+        txtResultado.color = new Color(1f, 0.5f, 0f); // Le puse color Naranja para diferenciarlo, ¡cámbialo si quieres!
         Time.timeScale = 0f; // El juego se congela
     }
 
@@ -52,5 +63,4 @@ public class AdministradorNivel : MonoBehaviour
         pantallaEstadisticas.SetActive(false); // Apagamos las estadísticas
         pantallaFinJuego.SetActive(true);      // Encendemos de nuevo la derrota
     }
-
 }
