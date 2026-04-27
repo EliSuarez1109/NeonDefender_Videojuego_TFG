@@ -30,7 +30,8 @@ public class GeneradorEnemigos : MonoBehaviour
     private int indiceRondaActual = 0;
 
     [Header("Interfaz")]
-    public Button botonEmpezar; 
+    public Button botonEmpezar;
+    public AdministradorNivel adminNivel;
 
     public void EmpezarSiguienteRonda()
     {
@@ -75,10 +76,22 @@ public class GeneradorEnemigos : MonoBehaviour
 
         Debug.Log("¡Mapa limpio! Ronda completada.");
 
+        // Registrar la ronda completada
+        if (GestorDatosPartida.instancia != null)
+        {
+            GestorDatosPartida.instancia.RegistrarRondaCompletada();
+        }
+
         // 3. DESBLOQUEAMOS EL BOTÓN para la siguiente ronda
         if (botonEmpezar != null) 
         {
             botonEmpezar.interactable = true;
+        }
+
+        // Si ya no quedan rondas y la base sigue en pie, mostramos victoria
+        if (indiceRondaActual >= rondas.Length && adminNivel != null && !adminNivel.juegoFinalizado)
+        {
+            adminNivel.MostrarVictoria();
         }
     }
 
@@ -92,6 +105,13 @@ public class GeneradorEnemigos : MonoBehaviour
             if (scriptEnemigo != null)
             {
                 scriptEnemigo.puntos = puntosCamino;
+                scriptEnemigo.nombreEnemigo = prefab.name; // Asignar el nombre del prefab como nombre del enemigo
+
+                // Registrar el enemigo como activo
+                if (GestorDatosPartida.instancia != null)
+                {
+                    GestorDatosPartida.instancia.AgregarEnemigoActivo(scriptEnemigo.nombreEnemigo);
+                }
             }
         }
     }

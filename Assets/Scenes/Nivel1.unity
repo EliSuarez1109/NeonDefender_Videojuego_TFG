@@ -3293,6 +3293,7 @@ MonoBehaviour:
       tiempoEntreEllos: 0.5
       tiempoEsperaDespues: 0
   botonEmpezar: {fileID: 2091313628}
+  adminNivel: {fileID: 832059179}
 --- !u!4 &2035053316
 Transform:
   m_ObjectHideFlags: 0

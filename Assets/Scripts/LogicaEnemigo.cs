@@ -25,6 +25,9 @@ public class LogicaEnemigo : MonoBehaviour
     [Header("Recompensa")]
     public int oroAlMorir = 2; 
 
+    [Header("Identificación")]
+    public string nombreEnemigo = "Enemigo"; // Nombre específico del enemigo
+
     // --- NUEVA VARIABLE PARA EL VENENO ---
     // Aquí el enemigo guardará el veneno único para poder borrarlo si le disparan otra vez
     private Coroutine rutinaVenenoUnico; 
@@ -84,6 +87,15 @@ public class LogicaEnemigo : MonoBehaviour
 
     void Morir()
     {
+        // Registrar la muerte del enemigo
+        if (GestorDatosPartida.instancia != null)
+        {
+            GestorDatosPartida.instancia.RegistrarEnemigo(nombreEnemigo);
+            GestorDatosPartida.instancia.RemoverEnemigoActivo(nombreEnemigo);
+            // Registrar el daño infligido (vida máxima porque lo eliminamos completamente)
+            GestorDatosPartida.instancia.RegistrarDanoInfligido(vidaMax);
+        }
+
         if(GestorEconomia.instancia != null) GestorEconomia.instancia.SumarOro(oroAlMorir);
         Destroy(gameObject);
     }
@@ -96,6 +108,16 @@ public class LogicaEnemigo : MonoBehaviour
             if (baseScript != null)
             {
                 baseScript.RecibirDano(danoABase);
+
+                // Remover el enemigo de activos ya que llegó a la base
+                if (GestorDatosPartida.instancia != null)
+                {
+                    GestorDatosPartida.instancia.RemoverEnemigoActivo(nombreEnemigo);
+                    // Registrar el daño infligido (lo que se le quitó de vida, no la vida restante)
+                    float danoInfligido = vidaMax - vidaActual;
+                    GestorDatosPartida.instancia.RegistrarDanoInfligido(danoInfligido);
+                }
+
                 Destroy(gameObject);
             }
         }

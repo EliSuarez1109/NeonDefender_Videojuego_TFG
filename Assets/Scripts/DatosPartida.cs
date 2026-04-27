@@ -12,10 +12,13 @@ public class PartidaJSON
     public int dano_total_recibido;
     public int oro_ganado;
     public int oro_gastado;
+    public int rondas_completadas;
+
     
     // Listas para las tablas intermedias (N:M)
     public List<DetalleTorre> torres = new List<DetalleTorre>();
     public List<DetalleEnemigo> enemigos = new List<DetalleEnemigo>();
+    public List<string> enemigosActivos = new List<string>();
 
     // Método para registrar una torre construida
     public void RegistrarTorre(string nombreTorre)
@@ -51,6 +54,21 @@ public class PartidaJSON
             // Si no existe, lo creamos
             enemigos.Add(new DetalleEnemigo { nombre = nombreEnemigo, cantidad = 1 });
         }
+    }
+
+    // Método para agregar un enemigo activo
+    public void AgregarEnemigoActivo(string nombreEnemigo)
+    {
+        if (!enemigosActivos.Contains(nombreEnemigo))
+        {
+            enemigosActivos.Add(nombreEnemigo);
+        }
+    }
+
+    // Método para remover un enemigo activo
+    public void RemoverEnemigoActivo(string nombreEnemigo)
+    {
+        enemigosActivos.Remove(nombreEnemigo);
     }
 
     // Método para restar una torre (cuando se vende)
@@ -100,6 +118,24 @@ public class PartidaJSON
     {
         dano_total_recibido += (int)cantidad;
        
+    }
+
+    // Método para registrar daño infligido a enemigos
+    public void RegistrarDanoInfligido(float cantidad)
+    {
+        dano_total_infligido += (int)cantidad;
+    }
+
+    // Método para registrar una ronda completada
+    public void RegistrarRondaCompletada()
+    {
+        rondas_completadas++;
+    }
+
+    // Método para establecer el resultado de la partida
+    public void EstablecerEstado(string nuevoEstado)
+    {
+        estado = nuevoEstado;
     }
 
     // Método para establecer el nivel de dificultad

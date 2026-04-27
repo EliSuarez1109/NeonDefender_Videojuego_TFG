@@ -40,9 +40,22 @@ public class GestorDatosPartida : MonoBehaviour
     public void RegistrarTorre(string nombreTorre) => datosPartida.RegistrarTorre(nombreTorre);
     public void DesvincularTorre(string nombreTorre) => datosPartida.DesvincularTorre(nombreTorre);
     public void RegistrarEnemigo(string nombreEnemigo) => datosPartida.RegistrarEnemigo(nombreEnemigo);
+    public void AgregarEnemigoActivo(string nombreEnemigo) => datosPartida.AgregarEnemigoActivo(nombreEnemigo);
+    public void RemoverEnemigoActivo(string nombreEnemigo) => datosPartida.RemoverEnemigoActivo(nombreEnemigo);
     public void RegistrarOroGanado(int cantidad) => datosPartida.RegistrarOroGanado(cantidad);
     public void RegistrarOroGastado(int cantidad) => datosPartida.RegistrarOroGastado(cantidad);
     public void RestarOroGastado(int cantidad) => datosPartida.RestarOroGastado(cantidad);
     public void RegistrarDanoRecibido(float cantidad) => datosPartida.RegistrarDanoRecibido(cantidad);
+    public void RegistrarDanoInfligido(float cantidad) => datosPartida.RegistrarDanoInfligido(cantidad);
+    public void RegistrarRondaCompletada() => datosPartida.RegistrarRondaCompletada();
+    public void EstablecerEstado(string estado) => datosPartida.EstablecerEstado(estado);
     public void EstablecerNivel(string nombreNivel) => datosPartida.EstablecerNivel(nombreNivel);
+
+    public void ResetDatosPartida()
+    {
+        //int userId = datosPartida.id_user;
+        datosPartida = new PartidaJSON();
+        //datosPartida.id_user = userId;
+        datosPartida.estado = string.Empty;
+    }
 }

@@ -9,11 +9,22 @@ public class AdministradorNivel : MonoBehaviour
     public GameObject pantallaEstadisticas; // Conectamos la pantalla aquí
 
     [Header("Textos")]
-    public TMP_Text txtResultado;       
+    public TMP_Text txtResultado;
+
+    [Header("Estado del juego")]
+    public bool juegoFinalizado = false;
 
     // Se llama cuando los enemigos destruyen tu torre
     public void MostrarDerrota()
     {
+        if (juegoFinalizado) return;
+        juegoFinalizado = true;
+
+        if (GestorDatosPartida.instancia != null)
+        {
+            GestorDatosPartida.instancia.EstablecerEstado("derrota");
+        }
+
         pantallaFinJuego.SetActive(true);
         pantallaEstadisticas.SetActive(false); // Nos aseguramos de que estadísticas esté apagada
         txtResultado.text = "¡BASE DESTRUIDA!";
@@ -21,9 +32,34 @@ public class AdministradorNivel : MonoBehaviour
         Time.timeScale = 0f; // El juego se congela
     }
 
+    public void MostrarVictoria()
+    {
+        if (juegoFinalizado) return;
+        juegoFinalizado = true;
+
+        if (GestorDatosPartida.instancia != null)
+        {
+            GestorDatosPartida.instancia.EstablecerEstado("victoria");
+        }
+
+        pantallaFinJuego.SetActive(true);
+        pantallaEstadisticas.SetActive(false); // Nos aseguramos de que estadísticas esté apagada
+        txtResultado.text = "¡VICTORIA!";
+        txtResultado.color = Color.green; 
+        Time.timeScale = 0f; // El juego se congela
+    }
+
     // --- ¡NUEVA FUNCIÓN PARA EL BOTÓN DE SALIR/RENDIRSE! ---
     public void Rendirse()
     {
+        if (juegoFinalizado) return;
+        juegoFinalizado = true;
+
+        if (GestorDatosPartida.instancia != null)
+        {
+            GestorDatosPartida.instancia.EstablecerEstado("rendicion");
+        }
+
         pantallaFinJuego.SetActive(true);
         pantallaEstadisticas.SetActive(false); // Nos aseguramos de que estadísticas esté apagada
         txtResultado.text = "¡TE HAS RENDIDO!"; // Cambiamos el mensaje

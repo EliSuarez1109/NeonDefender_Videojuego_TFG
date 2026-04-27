@@ -80,12 +80,17 @@ void Start()
 
         dificultad = mapasDisponibles[indiceActual].nombreDificultad;
 
+        if (GestorDatosPartida.instancia != null)
+        {
+            GestorDatosPartida.instancia.ResetDatosPartida();
+            Debug.Log("✓ Datos de partida reiniciados antes de cargar nueva partida");
+        }
+
         SceneManager.sceneLoaded += AlCargarEscena;
         
         Debug.Log("Cargando nivel: " + escenaACargar);
         
-        
-        // Viajamos a la escena
+        Time.timeScale = 1f; // Aseguramos que el tiempo vuelva a 1 si venimos de un final de partida
         SceneManager.LoadScene(escenaACargar);
 
     }

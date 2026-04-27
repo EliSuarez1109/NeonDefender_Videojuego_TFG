@@ -41,7 +41,7 @@ public class BasePrincipal : MonoBehaviour
             Debug.Log("¡GAME OVER!");
             
             // <- ¡NUEVO! Le avisamos al administrador para que salte la derrota
-            if (adminNivel != null)
+            if (adminNivel != null && !adminNivel.juegoFinalizado)
             {
                 adminNivel.MostrarDerrota(); 
             }
