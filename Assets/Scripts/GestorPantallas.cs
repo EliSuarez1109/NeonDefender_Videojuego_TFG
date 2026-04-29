@@ -15,6 +15,7 @@ public class GestorPantallas : MonoBehaviour
     public GameObject pantallaHistorial;
     public GameObject pantallaEstadisticas;
     public GameObject pantallaSeleccionMapa; 
+    public GameObject pantallaConfiguracion; // <--- ¡NUEVA PANTALLA AÑADIDA!
 
     [Header("Campos de Texto (Inputs)")]
     public TMP_InputField userLogin;
@@ -42,9 +43,9 @@ public class GestorPantallas : MonoBehaviour
         pantallaRegistro.SetActive(true);
     }
 
-public void IrAInicioSesion()
+    public void IrAInicioSesion()
     {
-        Debug.Log("¡El botón ha hecho clic y ha llamado a la función!"); // <--- AÑADE ESTA LÍNEA
+        Debug.Log("¡El botón ha hecho clic y ha llamado a la función!"); 
         DesactivarTodasLasPantallas();
         pantallaInicioSesion.SetActive(true);
     }
@@ -59,7 +60,6 @@ public void IrAInicioSesion()
     {
         DesactivarTodasLasPantallas();
         pantallaHistorial.SetActive(true);
-        //GenerarDatosDePrueba(); // Generamos las tarjetas al entrar
     }
 
     public void AbrirEstadisticas()
@@ -73,6 +73,13 @@ public void IrAInicioSesion()
         txtTotalTorres.text = "128";
     }
 
+    // <--- ¡NUEVA FUNCIÓN PARA ABRIR LOS AJUSTES! --->
+    public void AbrirConfiguracion()
+    {
+        DesactivarTodasLasPantallas();
+        pantallaConfiguracion.SetActive(true);
+    }
+
     // Esta es la función que te faltaba para que no de error
     private void DesactivarTodasLasPantallas()
     {
@@ -82,6 +89,9 @@ public void IrAInicioSesion()
         pantallaHistorial.SetActive(false);
         pantallaEstadisticas.SetActive(false);
         pantallaSeleccionMapa.SetActive(false);
+        
+        // Apagamos también la de configuración si está encendida
+        if (pantallaConfiguracion != null) pantallaConfiguracion.SetActive(false); 
     }
 
     void Start()
@@ -108,24 +118,16 @@ public void IrAInicioSesion()
 
     public void ClickLoginrapido()
     {
-        // Borra la línea de StartCoroutine(EnviarPeticion...);
         IrAMenuPrincipal(); // Salto directo
     }
-/*
-    public void ClickRegistro()
+
+    public void ClickJugar()
     {
-        // Borra la línea de StartCoroutine(EnviarPeticion...);
-        IrAInicioSesion(); // Salto directo
-    }*/
-
-public void ClickJugar()
-{
-    DesactivarTodasLasPantallas();
-    pantallaSeleccionMapa.SetActive(true); // Abre el carrusel
-}
-
+        DesactivarTodasLasPantallas();
+        pantallaSeleccionMapa.SetActive(true); // Abre el carrusel
+    }
     
-public void ClickLogin()
+    public void ClickLogin()
     {
         if (string.IsNullOrEmpty(userLogin.text) || string.IsNullOrEmpty(passLogin.text)) {
             Debug.LogWarning("Por favor, rellena todos los campos.");
@@ -143,7 +145,6 @@ public void ClickLogin()
 
     IEnumerator EnviarPeticion(string accion, string user, string pass)
     {
-        // 1. Crear el objeto de datos
         AuthRequest datos = new AuthRequest {
             nickname = user,
             contrasena = pass,
@@ -152,7 +153,6 @@ public void ClickLogin()
 
         string json = JsonUtility.ToJson(datos);
 
-        // 2. Configurar la petición
         Debug.Log("JSON enviado: " + json);
         using (UnityWebRequest request = new UnityWebRequest(apiURL, "POST"))
         {
@@ -165,7 +165,6 @@ public void ClickLogin()
 
             yield return request.SendWebRequest();
 
-            // 3. Manejo de Errores de Red (Aquí es donde sale el "Cannot resolve host")
             if (request.result == UnityWebRequest.Result.ConnectionError || request.result == UnityWebRequest.Result.ProtocolError)
             {
                 Debug.LogError("Error de Red/DNS: " + request.error);
@@ -173,10 +172,8 @@ public void ClickLogin()
             }
             else
             {
-                // 4. Procesar Respuesta Exitosa
                 Debug.Log("Respuesta recibida: " + request.downloadHandler.text);
                 
-                // Si el login es correcto, pasamos al menú
                 if (request.responseCode == 200 || request.responseCode == 201)
                 {
                     if (accion == "registro") IrAInicioSesion();
@@ -193,7 +190,6 @@ public void ClickLogin()
         }
     }
 
-    // Clase auxiliar para convertir a JSON 
     [System.Serializable]
     public class AuthRequest {
         public string nickname;
@@ -203,13 +199,13 @@ public void ClickLogin()
 
     [System.Serializable]
     public class PartidaData{
-    public int id_partida;
-    public string fecha;
-    public string estado;
-    public string nivel;
-    public int oro_ganado;
-    public int total_enemigos;
-    public int total_torres;
+        public int id_partida;
+        public string fecha;
+        public string estado;
+        public string nivel;
+        public int oro_ganado;
+        public int total_enemigos;
+        public int total_torres;
     }
 
     [System.Serializable]
@@ -219,39 +215,7 @@ public void ClickLogin()
         public List<PartidaData> partidas;
     }
 
-
     // --- LÓGICA DE HISTORIAL (TARJETAS) ---
-
-/*private void GenerarDatosDePrueba()
-    {
-        // 1. Limpiamos la caja
-        for (int i = contenedorContent.childCount - 1; i >= 0; i--)
-        {
-            Transform hijo = contenedorContent.GetChild(i);
-            hijo.SetParent(null); 
-            Destroy(hijo.gameObject); 
-        }
-
-        // 2. Creamos 5 partidas falsas
-        for (int i = 0; i < 5; i++)
-        {
-            GameObject nuevaTarjeta = Instantiate(prefabTarjeta, contenedorContent, false);
-            nuevaTarjeta.transform.localScale = Vector3.one; 
-            nuevaTarjeta.transform.localPosition = new Vector3(nuevaTarjeta.transform.localPosition.x, nuevaTarjeta.transform.localPosition.y, 0f); 
-
-            TarjetaPartida scriptTarjeta = nuevaTarjeta.GetComponent<TarjetaPartida>();
-
-            // 3. Inventamos ORO, FECHA y RESULTADO
-            string resultadoFalso = (Random.value > 0.5f) ? "Victoria" : "Derrota";
-            string fechaFalsa = "14/04/2026";
-            
-            // Generamos oro aleatorio en lugar de minutos (ej. 150 a 2000)
-            string oroFalso = Random.Range(150, 2000).ToString();
-
-            // 4. Mandamos los datos limpios a la tarjeta
-            scriptTarjeta.ConfigurarTarjeta(oroFalso, fechaFalsa, resultadoFalso,"Dificil","17","4");
-        }
-    }*/
 
     private void ActualizarHistorialReal(string json)
     {
@@ -278,5 +242,4 @@ public void ClickLogin()
             }
         }
     }
-
 }
