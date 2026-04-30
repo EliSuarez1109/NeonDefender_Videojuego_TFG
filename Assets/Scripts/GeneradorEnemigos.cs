@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using UnityEngine.UI; 
+using TMPro;
 
 [System.Serializable]
 public class GrupoEnemigos
@@ -32,11 +33,28 @@ public class GeneradorEnemigos : MonoBehaviour
     [Header("Interfaz")]
     public Button botonEmpezar;
     public AdministradorNivel adminNivel;
+    
+    [Header("HUD de Rondas")]
+    public TextMeshProUGUI textoContadorRondas;
+
+    // --- NUEVO: FUNCIÓN START ---
+    // Esta función se ejecuta sola una vez al empezar el nivel
+    void Start()
+    {
+        // Preparamos el texto para que muestre la ronda 1 desde el principio
+        ActualizarTextoRondas(1);
+    }
+    // ----------------------------
 
     public void EmpezarSiguienteRonda()
     {
         if (indiceRondaActual < rondas.Length)
         {
+            // --- NUEVO ---
+            // Actualizamos el texto a la ronda que está a punto de salir
+            ActualizarTextoRondas(indiceRondaActual + 1); 
+            // -------------
+
             StartCoroutine(SpawnRonda(rondas[indiceRondaActual]));
             indiceRondaActual++;
         }
@@ -93,6 +111,13 @@ public class GeneradorEnemigos : MonoBehaviour
         {
             adminNivel.MostrarVictoria();
         }
+        else
+        {
+            // --- NUEVO ---
+            // Si aún quedan rondas, actualizamos el texto para que anuncie la siguiente
+            ActualizarTextoRondas(indiceRondaActual + 1);
+            // -------------
+        }
     }
 
     void CrearEnemigo(GameObject prefab)
@@ -113,6 +138,19 @@ public class GeneradorEnemigos : MonoBehaviour
                     GestorDatosPartida.instancia.AgregarEnemigoActivo(scriptEnemigo.nombreEnemigo);
                 }
             }
+        }
+    }
+
+    // Esta función actualiza el texto usando el tamaño automático de tu lista
+    public void ActualizarTextoRondas(int numeroDeRondaActual)
+    {
+        if (textoContadorRondas != null)
+        {
+            // Nos aseguramos de que el número visual no supere el total de rondas
+            int rondaVisual = Mathf.Min(numeroDeRondaActual, rondas.Length);
+
+            // rondas.Length detectará automáticamente si este nivel tiene 3, 5 o 20 rondas
+            textoContadorRondas.text = rondaVisual + " / " + rondas.Length;
         }
     }
 }
