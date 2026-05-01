@@ -15,7 +15,7 @@ public class GestorPantallas : MonoBehaviour
     public GameObject pantallaHistorial;
     public GameObject pantallaEstadisticas;
     public GameObject pantallaSeleccionMapa; 
-    public GameObject pantallaConfiguracion; // <--- ¡NUEVA PANTALLA AÑADIDA!
+    public GameObject pantallaConfiguracion; 
 
     [Header("Campos de Texto (Inputs)")]
     public TMP_InputField userLogin;
@@ -35,7 +35,9 @@ public class GestorPantallas : MonoBehaviour
     [Header("Configuración AWS")]
     public string apiURL = "https://pr3m2sbom5.execute-api.us-east-1.amazonaws.com/default/L_Unity_Login_towerdefens";
 
-    // --- NAVEGACIÓN BÁSICA ---
+    // ==========================================
+    // NAVEGACIÓN BÁSICA
+    // ==========================================
 
     public void IrARegistro()
     {
@@ -45,7 +47,6 @@ public class GestorPantallas : MonoBehaviour
 
     public void IrAInicioSesion()
     {
-        Debug.Log("¡El botón ha hecho clic y ha llamado a la función!"); 
         DesactivarTodasLasPantallas();
         pantallaInicioSesion.SetActive(true);
     }
@@ -73,14 +74,21 @@ public class GestorPantallas : MonoBehaviour
         txtTotalTorres.text = "128";
     }
 
-    // <--- ¡NUEVA FUNCIÓN PARA ABRIR LOS AJUSTES! --->
     public void AbrirConfiguracion()
     {
         DesactivarTodasLasPantallas();
         pantallaConfiguracion.SetActive(true);
     }
 
-    // Esta es la función que te faltaba para que no de error
+    // Función para borrar los datos guardados y salir
+    public void CerrarSesion()
+    {
+        Debug.Log("Cerrando sesión y borrando memoria...");
+        PlayerPrefs.SetInt("UsuarioLogueado", 0);
+        PlayerPrefs.Save();
+        IrAInicioSesion();
+    }
+
     private void DesactivarTodasLasPantallas()
     {
         pantallaInicioSesion.SetActive(false);
@@ -90,41 +98,50 @@ public class GestorPantallas : MonoBehaviour
         pantallaEstadisticas.SetActive(false);
         pantallaSeleccionMapa.SetActive(false);
         
-        // Apagamos también la de configuración si está encendida
         if (pantallaConfiguracion != null) pantallaConfiguracion.SetActive(false); 
     }
 
+    // ==========================================
+    // INICIO DEL JUEGO (PERSISTENCIA)
+    // ==========================================
+
     void Start()
     {
-        // El menú arranca y comprueba si hay una nota secreta de volver a jugar
+        // 1. Comprueba si venimos de jugar un nivel (Carrusel)
         if (PlayerPrefs.GetInt("AbrirCarrusel", 0) == 1)
         {
-            // 1. Borramos la nota
             PlayerPrefs.SetInt("AbrirCarrusel", 0);
-
-            // 2. Apagamos todo y encendemos el Carrusel
             DesactivarTodasLasPantallas();
             pantallaSeleccionMapa.SetActive(true); 
         }
+        // 2. Comprueba si el usuario ya inició sesión antes
+        else if (PlayerPrefs.GetInt("UsuarioLogueado", 0) == 1)
+        {
+            Debug.Log("✓ Sesión recordada. Saltando al Menú Principal.");
+            DesactivarTodasLasPantallas();
+            pantallaMenu.SetActive(true);
+        }
+        // 3. Si no hay datos, abre el Login normalmente
         else
         {
-            // Si NO hay nota, abrimos la pantalla normal del menú
             DesactivarTodasLasPantallas();
-            pantallaInicioSesion.SetActive(true); // O la pantalla inicial que uses
+            pantallaInicioSesion.SetActive(true); 
         }
     }
 
-    // --- LÓGICA DE AWS ---
+    // ==========================================
+    // LÓGICA DE BOTONES Y CONEXIÓN
+    // ==========================================
 
     public void ClickLoginrapido()
     {
-        IrAMenuPrincipal(); // Salto directo
+        IrAMenuPrincipal(); 
     }
 
     public void ClickJugar()
     {
         DesactivarTodasLasPantallas();
-        pantallaSeleccionMapa.SetActive(true); // Abre el carrusel
+        pantallaSeleccionMapa.SetActive(true); 
     }
     
     public void ClickLogin()
@@ -133,7 +150,21 @@ public class GestorPantallas : MonoBehaviour
             Debug.LogWarning("Por favor, rellena todos los campos.");
             return;
         }
-        StartCoroutine(EnviarPeticion("login", userLogin.text, passLogin.text));
+
+        // --- MODO DESARROLLO SIN AWS (TEMPORAL) ---
+        Debug.Log("Simulando conexión a AWS... ¡Login Exitoso!");
+        
+        // Guardamos la sesión en memoria
+        PlayerPrefs.SetInt("UsuarioLogueado", 1);
+        PlayerPrefs.Save();
+        
+        // Entramos al menú principal
+        IrAMenuPrincipal();
+        // ------------------------------------------
+
+        // NOTA: Cuando vuelvas a encender tu servidor AWS, borra el bloque "MODO DESARROLLO" 
+        // de arriba y quítale las dos barras (//) a la línea de abajo para activar la conexión real:
+        // StartCoroutine(EnviarPeticion("login", userLogin.text, passLogin.text));
     }
 
     public void ClickRegistro()
@@ -141,7 +172,9 @@ public class GestorPantallas : MonoBehaviour
         StartCoroutine(EnviarPeticion("registro", userRegister.text, passRegister.text));
     }
 
-    // --- CORRUTINA DE RED ---
+    // ==========================================
+    // CORRUTINA DE RED (AWS)
+    // ==========================================
 
     IEnumerator EnviarPeticion(string accion, string user, string pass)
     {
@@ -153,7 +186,6 @@ public class GestorPantallas : MonoBehaviour
 
         string json = JsonUtility.ToJson(datos);
 
-        Debug.Log("JSON enviado: " + json);
         using (UnityWebRequest request = new UnityWebRequest(apiURL, "POST"))
         {
             byte[] bodyRaw = System.Text.Encoding.UTF8.GetBytes(json);
@@ -161,34 +193,34 @@ public class GestorPantallas : MonoBehaviour
             request.downloadHandler = new DownloadHandlerBuffer();
             request.SetRequestHeader("Content-Type", "application/json");
 
-            Debug.Log($"Conectando a AWS para {accion}...");
-
             yield return request.SendWebRequest();
 
             if (request.result == UnityWebRequest.Result.ConnectionError || request.result == UnityWebRequest.Result.ProtocolError)
             {
                 Debug.LogError("Error de Red/DNS: " + request.error);
-                Debug.LogError("Causa probable: URL mal escrita, falta de internet o firewall.");
             }
             else
             {
-                Debug.Log("Respuesta recibida: " + request.downloadHandler.text);
-                
                 if (request.responseCode == 200 || request.responseCode == 201)
                 {
                     if (accion == "registro") IrAInicioSesion();
                     else
                     {
+                        // Guardamos el Login en memoria real con AWS
+                        PlayerPrefs.SetInt("UsuarioLogueado", 1);
+                        PlayerPrefs.Save();
+
                         IrAMenuPrincipal();
                         ActualizarHistorialReal(request.downloadHandler.text);
                     } 
                 }
-                else {
-                    Debug.LogWarning("AWS rechazó la petición: " + request.downloadHandler.text);
-                }
             }
         }
     }
+
+    // ==========================================
+    // CLASES DE ESTRUCTURA DE DATOS
+    // ==========================================
 
     [System.Serializable]
     public class AuthRequest {
@@ -215,7 +247,9 @@ public class GestorPantallas : MonoBehaviour
         public List<PartidaData> partidas;
     }
 
-    // --- LÓGICA DE HISTORIAL (TARJETAS) ---
+    // ==========================================
+    // LÓGICA DE HISTORIAL (TARJETAS)
+    // ==========================================
 
     private void ActualizarHistorialReal(string json)
     {

@@ -51,11 +51,24 @@ public class GestorDatosPartida : MonoBehaviour
     public void EstablecerEstado(string estado) => datosPartida.EstablecerEstado(estado);
     public void EstablecerNivel(string nombreNivel) => datosPartida.EstablecerNivel(nombreNivel);
 
+    // public void ResetDatosPartida()
+    // {
+    //     //int userId = datosPartida.id_user;
+    //     datosPartida = new PartidaJSON();
+    //     //datosPartida.id_user = userId;
+    //     datosPartida.estado = string.Empty;
+    // }
+
     public void ResetDatosPartida()
     {
-        //int userId = datosPartida.id_user;
+        // 1. Guardamos el ID del usuario actual antes de borrar nada
+        int userId = datosPartida.id_user; 
+        
+        // 2. Creamos una partida completamente en blanco
         datosPartida = new PartidaJSON();
-        //datosPartida.id_user = userId;
+        
+        // 3. Le devolvemos su ID de usuario para que siga logueado
+        datosPartida.id_user = userId;
         datosPartida.estado = string.Empty;
     }
 }

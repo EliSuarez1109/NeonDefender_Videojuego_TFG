@@ -49,7 +49,7 @@ public class AdministradorNivel : MonoBehaviour
         Time.timeScale = 0f; // El juego se congela
     }
 
-    // --- ¡NUEVA FUNCIÓN PARA EL BOTÓN DE SALIR/RENDIRSE! ---
+    // --- FUNCIÓN PARA EL BOTÓN DE SALIR/RENDIRSE ---
     public void Rendirse()
     {
         if (juegoFinalizado) return;
@@ -61,27 +61,33 @@ public class AdministradorNivel : MonoBehaviour
         }
 
         pantallaFinJuego.SetActive(true);
-        pantallaEstadisticas.SetActive(false); // Nos aseguramos de que estadísticas esté apagada
-        txtResultado.text = "¡TE HAS RENDIDO!"; // Cambiamos el mensaje
-        txtResultado.color = new Color(1f, 0.5f, 0f); // Le puse color Naranja para diferenciarlo, ¡cámbialo si quieres!
-        Time.timeScale = 0f; // El juego se congela
+        pantallaEstadisticas.SetActive(false); 
+        txtResultado.text = "¡TE HAS RENDIDO!"; 
+        txtResultado.color = new Color(1f, 0.5f, 0f); 
+        Time.timeScale = 0f; 
     }
 
     // El botón "Ver Estadísticas" de la pantalla de Fin de Partida llamará a esto
     public void AbrirEstadisticas()
     {
-        pantallaFinJuego.SetActive(false);     // Apagamos la pantalla de derrota
-        pantallaEstadisticas.SetActive(true);  // Encendemos la de estadísticas
+        pantallaFinJuego.SetActive(false);     
+        pantallaEstadisticas.SetActive(true);  
     }
 
     // El botón "Volver al Menú" (tanto el de derrota como el de estadísticas) llamará a esto
     public void VolverAlMenuPrincipal()
     {
         Time.timeScale = 1f; // Descongelamos el tiempo
+        
+        // --- CÓDIGO AÑADIDO: Mantenemos el login activo ---
+        PlayerPrefs.SetInt("UsuarioLogueado", 1);
+        PlayerPrefs.Save();
+        // --------------------------------------------------
+
         SceneManager.LoadScene("InterfazUsuario"); // Viajamos al menú principal
     }
 
-    // --- NUEVO BOTÓN: VOLVER AL CARRUSEL DE MAPAS ---
+    // --- BOTÓN: VOLVER AL CARRUSEL DE MAPAS ---
     public void VolverASeleccionMapa()
     {
         Time.timeScale = 1f; // Descongelamos el tiempo
@@ -89,11 +95,16 @@ public class AdministradorNivel : MonoBehaviour
         // Dejamos una "nota secreta" para que el menú sepa qué abrir
         PlayerPrefs.SetInt("AbrirCarrusel", 1); 
 
+        // --- CÓDIGO AÑADIDO: Mantenemos el login activo ---
+        PlayerPrefs.SetInt("UsuarioLogueado", 1);
+        PlayerPrefs.Save();
+        // --------------------------------------------------
+
         // Viajamos a la escena del menú
         SceneManager.LoadScene("InterfazUsuario"); 
     }
 
-    // --- NUEVO BOTÓN: VOLVER DE ESTADÍSTICAS A FIN DE PARTIDA ---
+    // --- BOTÓN: VOLVER DE ESTADÍSTICAS A FIN DE PARTIDA ---
     public void VolverAFinDePartida()
     {
         pantallaEstadisticas.SetActive(false); // Apagamos las estadísticas
