@@ -1373,6 +1373,17 @@ Transform:
   m_Children: []
   m_Father: {fileID: 538001705}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &240918553 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4883131865864098429, guid: f4446724647dc4fe09acec9a4d91021b, type: 3}
+  m_PrefabInstance: {fileID: 186944192}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
 --- !u!1 &264741986
 GameObject:
   m_ObjectHideFlags: 0
@@ -3293,6 +3304,17 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
+--- !u!114 &691174159 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5779997359326984925, guid: f4446724647dc4fe09acec9a4d91021b, type: 3}
+  m_PrefabInstance: {fileID: 186944192}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
 --- !u!1 &787863091
 GameObject:
   m_ObjectHideFlags: 0
@@ -4963,6 +4985,17 @@ Transform:
   m_Children: []
   m_Father: {fileID: 2091448060}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1296690276 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 141575627701469367, guid: f4446724647dc4fe09acec9a4d91021b, type: 3}
+  m_PrefabInstance: {fileID: 186944192}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
 --- !u!1 &1304071243
 GameObject:
   m_ObjectHideFlags: 0
@@ -5680,6 +5713,17 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
+--- !u!114 &1475830638 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3483755723312347201, guid: f4446724647dc4fe09acec9a4d91021b, type: 3}
+  m_PrefabInstance: {fileID: 186944192}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
 --- !u!1 &1481959832
 GameObject:
   m_ObjectHideFlags: 0
@@ -6572,6 +6616,17 @@ Transform:
   m_Children: []
   m_Father: {fileID: 538001705}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1748279423 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2985627251230053448, guid: f4446724647dc4fe09acec9a4d91021b, type: 3}
+  m_PrefabInstance: {fileID: 186944192}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
 --- !u!1 &1751368147
 GameObject:
   m_ObjectHideFlags: 0
@@ -6747,42 +6802,42 @@ MonoBehaviour:
     costeActual: 100
     multiplicadorCoste: 1.25
     textoBoton: {fileID: 2134321026}
-    imagenFondoBoton: {fileID: 0}
+    imagenFondoBoton: {fileID: 1475830638}
   - nombre: Torre2
     prefabReal: {fileID: 8644672651147763296, guid: 396b008cb826bef4a87ad19f7ea3857d, type: 3}
     prefabFantasma: {fileID: 8644672651147763296, guid: a8e424d7e328eaf46af18efad5feafe9, type: 3}
     costeActual: 500
     multiplicadorCoste: 1.1
     textoBoton: {fileID: 537492782}
-    imagenFondoBoton: {fileID: 0}
+    imagenFondoBoton: {fileID: 1296690276}
   - nombre: Torre3
     prefabReal: {fileID: 8644672651147763296, guid: 476aa136d4f722e438509ab91548309f, type: 3}
     prefabFantasma: {fileID: 8644672651147763296, guid: eeb62be670233184bba72532eb76f461, type: 3}
     costeActual: 1000
     multiplicadorCoste: 1.1
     textoBoton: {fileID: 631692935}
-    imagenFondoBoton: {fileID: 0}
+    imagenFondoBoton: {fileID: 1862286875}
   - nombre: Torre4
     prefabReal: {fileID: 8644672651147763296, guid: 2b815d1effcc7ce4394e46a568e77733, type: 3}
     prefabFantasma: {fileID: 8644672651147763296, guid: f5d72ac2b77536340aefb632dea44bb7, type: 3}
     costeActual: 1000
     multiplicadorCoste: 1.1
     textoBoton: {fileID: 1992882212}
-    imagenFondoBoton: {fileID: 0}
+    imagenFondoBoton: {fileID: 240918553}
   - nombre: Torre5
     prefabReal: {fileID: 8644672651147763296, guid: 76f0bfe579edf1f428de917a363ffc96, type: 3}
     prefabFantasma: {fileID: 8644672651147763296, guid: 95c3564ba51348044a2d6bd94fbb315b, type: 3}
     costeActual: 1000
     multiplicadorCoste: 1.1
     textoBoton: {fileID: 977658561}
-    imagenFondoBoton: {fileID: 0}
+    imagenFondoBoton: {fileID: 1748279423}
   - nombre: Torre6
     prefabReal: {fileID: 8644672651147763296, guid: e8372b03e2212f64fb840b6a2b8a42fe, type: 3}
     prefabFantasma: {fileID: 8644672651147763296, guid: c0278b952c8147a46ae61efc0ee8c864, type: 3}
     costeActual: 1000
     multiplicadorCoste: 1.1
     textoBoton: {fileID: 616093707}
-    imagenFondoBoton: {fileID: 0}
+    imagenFondoBoton: {fileID: 691174159}
   capasBloqueadas:
     serializedVersion: 2
     m_Bits: 72
@@ -6959,6 +7014,17 @@ Transform:
   m_Children: []
   m_Father: {fileID: 877571488}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1862286875 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2207973832269295179, guid: f4446724647dc4fe09acec9a4d91021b, type: 3}
+  m_PrefabInstance: {fileID: 186944192}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
 --- !u!1 &1888169360
 GameObject:
   m_ObjectHideFlags: 0
