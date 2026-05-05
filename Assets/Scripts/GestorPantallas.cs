@@ -105,7 +105,7 @@ public class GestorPantallas : MonoBehaviour
     // INICIO DEL JUEGO (PERSISTENCIA)
     // ==========================================
 
-    void Start()
+   /* void Start()
     {
         // 1. Comprueba si venimos de jugar un nivel (Carrusel)
         if (PlayerPrefs.GetInt("AbrirCarrusel", 0) == 1)
@@ -122,6 +122,38 @@ public class GestorPantallas : MonoBehaviour
             pantallaMenu.SetActive(true);
         }
         // 3. Si no hay datos, abre el Login normalmente
+        else
+        {
+            DesactivarTodasLasPantallas();
+            pantallaInicioSesion.SetActive(true); 
+        }
+    }*/
+
+     void Start()
+    {
+        // --- TRUCO DE DESARROLLADOR ---
+        // Quita las dos barras diagonales (//) de la línea de abajo para borrar la memoria de Unity.
+        // Cuando tu juego ya esté listo para publicarse, vuelve a ponerle las // para que recuerde a los jugadores.
+        
+        PlayerPrefs.DeleteAll(); 
+
+        // ------------------------------
+
+        // 1. Primero comprueba si venimos de jugar un nivel
+        if (PlayerPrefs.GetInt("AbrirCarrusel", 0) == 1)
+        {
+            PlayerPrefs.SetInt("AbrirCarrusel", 0);
+            DesactivarTodasLasPantallas();
+            pantallaSeleccionMapa.SetActive(true); 
+        }
+        // 2. Comprueba si el usuario ya inició sesión antes
+        else if (PlayerPrefs.GetInt("UsuarioLogueado", 0) == 1)
+        {
+            Debug.Log("✓ Sesión recordada. Saltando al Menú Principal.");
+            DesactivarTodasLasPantallas();
+            pantallaMenu.SetActive(true);
+        }
+        // 3. Si no hay nota ni sesión, abre el Login
         else
         {
             DesactivarTodasLasPantallas();
@@ -152,19 +184,19 @@ public class GestorPantallas : MonoBehaviour
         }
 
         // --- MODO DESARROLLO SIN AWS (TEMPORAL) ---
-        Debug.Log("Simulando conexión a AWS... ¡Login Exitoso!");
+       // Debug.Log("Simulando conexión a AWS... ¡Login Exitoso!");
         
         // Guardamos la sesión en memoria
-        PlayerPrefs.SetInt("UsuarioLogueado", 1);
-        PlayerPrefs.Save();
+        //PlayerPrefs.SetInt("UsuarioLogueado", 1);
+        //PlayerPrefs.Save();
         
         // Entramos al menú principal
-        IrAMenuPrincipal();
+        //IrAMenuPrincipal();
         // ------------------------------------------
 
         // NOTA: Cuando vuelvas a encender tu servidor AWS, borra el bloque "MODO DESARROLLO" 
         // de arriba y quítale las dos barras (//) a la línea de abajo para activar la conexión real:
-        // StartCoroutine(EnviarPeticion("login", userLogin.text, passLogin.text));
+        StartCoroutine(EnviarPeticion("login", userLogin.text, passLogin.text));
     }
 
     public void ClickRegistro()
@@ -209,6 +241,16 @@ public class GestorPantallas : MonoBehaviour
                         // Guardamos el Login en memoria real con AWS
                         PlayerPrefs.SetInt("UsuarioLogueado", 1);
                         PlayerPrefs.Save();
+
+                        if (GestorDatosPartida.instancia != null)
+                        {
+                            RespuestaAWS awsDatos = JsonUtility.FromJson<RespuestaAWS>(request.downloadHandler.text);
+                            if (awsDatos != null)
+                            {
+                                GestorDatosPartida.instancia.datosPartida.id_user = awsDatos.id_user;
+                                Debug.Log("✓ id_user guardado en GestorDatosPartida: " + awsDatos.id_user);
+                            }
+                        }
 
                         IrAMenuPrincipal();
                         ActualizarHistorialReal(request.downloadHandler.text);

@@ -1,4 +1,6 @@
 using UnityEngine;
+using UnityEngine.Networking;
+using System.Collections;
 
 public class GestorDatosPartida : MonoBehaviour
 {
@@ -6,6 +8,9 @@ public class GestorDatosPartida : MonoBehaviour
 
     [Header("Datos de la Partida")]
     public PartidaJSON datosPartida = new PartidaJSON();
+
+    [Header("AWS Guardado de Partida")]
+    public string savePartidaAPI = "https://q2v7qbfux6.execute-api.us-east-1.amazonaws.com/default/L_Unity_Save_TD";
 
     void Awake()
     {
@@ -51,6 +56,35 @@ public class GestorDatosPartida : MonoBehaviour
     public void EstablecerEstado(string estado) => datosPartida.EstablecerEstado(estado);
     public void EstablecerNivel(string nombreNivel) => datosPartida.EstablecerNivel(nombreNivel);
 
+    public void GuardarPartidaAWS()
+    {
+        StartCoroutine(EnviarPartidaAWS());
+    }
+
+    IEnumerator EnviarPartidaAWS()
+    {
+        string json = JsonUtility.ToJson(datosPartida);
+
+        using (UnityWebRequest request = new UnityWebRequest(savePartidaAPI, "POST"))
+        {
+            byte[] bodyRaw = System.Text.Encoding.UTF8.GetBytes(json);
+            request.uploadHandler = new UploadHandlerRaw(bodyRaw);
+            request.downloadHandler = new DownloadHandlerBuffer();
+            request.SetRequestHeader("Content-Type", "application/json");
+
+            yield return request.SendWebRequest();
+
+            if (request.result == UnityWebRequest.Result.ConnectionError || request.result == UnityWebRequest.Result.ProtocolError)
+            {
+                Debug.LogError("Error guardando partida: " + request.error);
+            }
+            else
+            {
+                Debug.Log("Partida enviada correctamente: " + request.responseCode + " | " + request.downloadHandler.text);
+            }
+        }
+    }
+
     // public void ResetDatosPartida()
     // {
     //     //int userId = datosPartida.id_user;
@@ -71,4 +105,6 @@ public class GestorDatosPartida : MonoBehaviour
         datosPartida.id_user = userId;
         datosPartida.estado = string.Empty;
     }
+
+    
 }

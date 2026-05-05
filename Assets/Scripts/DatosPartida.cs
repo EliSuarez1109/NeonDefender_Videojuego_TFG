@@ -143,6 +143,8 @@ public class PartidaJSON
     {
         nivel = nombreNivel;
     }
+
+    
 }
 
 [Serializable]
@@ -156,3 +158,5 @@ public class DetalleEnemigo {
     public string nombre;
     public int cantidad;
 }
+
+

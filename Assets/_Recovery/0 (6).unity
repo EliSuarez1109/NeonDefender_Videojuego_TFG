@@ -1971,7 +1971,7 @@ MonoBehaviour:
     torres: []
     enemigos: []
     enemigosActivos: []
-  savePartidaAPI: https://q2v7qbfux6.execute-api.us-east-1.amazonaws.com/default/default
+  savePartidaAPI: https://q2v7qbfux6.execute-api.us-east-1.amazonaws.com/default
 --- !u!4 &874851441
 Transform:
   m_ObjectHideFlags: 0

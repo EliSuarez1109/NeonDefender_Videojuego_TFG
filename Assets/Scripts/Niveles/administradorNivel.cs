@@ -23,6 +23,7 @@ public class AdministradorNivel : MonoBehaviour
         if (GestorDatosPartida.instancia != null)
         {
             GestorDatosPartida.instancia.EstablecerEstado("derrota");
+            GestorDatosPartida.instancia.GuardarPartidaAWS();
         }
 
         pantallaFinJuego.SetActive(true);
@@ -40,6 +41,7 @@ public class AdministradorNivel : MonoBehaviour
         if (GestorDatosPartida.instancia != null)
         {
             GestorDatosPartida.instancia.EstablecerEstado("victoria");
+            GestorDatosPartida.instancia.GuardarPartidaAWS();
         }
 
         pantallaFinJuego.SetActive(true);
@@ -58,6 +60,7 @@ public class AdministradorNivel : MonoBehaviour
         if (GestorDatosPartida.instancia != null)
         {
             GestorDatosPartida.instancia.EstablecerEstado("rendicion");
+            GestorDatosPartida.instancia.GuardarPartidaAWS();
         }
 
         pantallaFinJuego.SetActive(true);
