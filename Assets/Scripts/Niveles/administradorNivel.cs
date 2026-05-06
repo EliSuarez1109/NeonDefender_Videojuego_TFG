@@ -77,16 +77,11 @@ public class AdministradorNivel : MonoBehaviour
         pantallaEstadisticas.SetActive(true);  
     }
 
-    // El botón "Volver al Menú" (tanto el de derrota como el de estadísticas) llamará a esto
+// El botón "Volver al Menú" (tanto el de derrota como el de estadísticas) llamará a esto
     public void VolverAlMenuPrincipal()
     {
         Time.timeScale = 1f; // Descongelamos el tiempo
         
-        // --- CÓDIGO AÑADIDO: Mantenemos el login activo ---
-        PlayerPrefs.SetInt("UsuarioLogueado", 1);
-        PlayerPrefs.Save();
-        // --------------------------------------------------
-
         SceneManager.LoadScene("InterfazUsuario"); // Viajamos al menú principal
     }
 
@@ -97,15 +92,12 @@ public class AdministradorNivel : MonoBehaviour
 
         // Dejamos una "nota secreta" para que el menú sepa qué abrir
         PlayerPrefs.SetInt("AbrirCarrusel", 1); 
-
-        // --- CÓDIGO AÑADIDO: Mantenemos el login activo ---
-        PlayerPrefs.SetInt("UsuarioLogueado", 1);
-        PlayerPrefs.Save();
-        // --------------------------------------------------
+        PlayerPrefs.Save(); // Guardamos la nota
 
         // Viajamos a la escena del menú
         SceneManager.LoadScene("InterfazUsuario"); 
     }
+
 
     // --- BOTÓN: VOLVER DE ESTADÍSTICAS A FIN DE PARTIDA ---
     public void VolverAFinDePartida()

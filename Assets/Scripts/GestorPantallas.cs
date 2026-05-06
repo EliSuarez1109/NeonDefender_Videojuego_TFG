@@ -8,6 +8,11 @@ using UnityEngine.SceneManagement;
 
 public class GestorPantallas : MonoBehaviour
 {
+    // --- NUEVA VARIABLE DE MEMORIA TEMPORAL ---
+    // Al ser 'static', sobrevive a los cambios de escena, pero se borra al cerrar el juego.
+    public static bool sesionActiva = false;
+    // ------------------------------------------
+
     [Header("Conecta tus pantallas aquí")]
     public GameObject pantallaInicioSesion;
     public GameObject pantallaRegistro;
@@ -68,7 +73,6 @@ public class GestorPantallas : MonoBehaviour
         DesactivarTodasLasPantallas();
         pantallaEstadisticas.SetActive(true);
 
-        // Datos de prueba para estadísticas
         txtDanoRecibido.text = "15,400";
         txtDanoInfligido.text = "42,850";
         txtTotalTorres.text = "128";
@@ -80,12 +84,11 @@ public class GestorPantallas : MonoBehaviour
         pantallaConfiguracion.SetActive(true);
     }
 
-    // Función para borrar los datos guardados y salir
+    // Función para cerrar la sesión manualmente
     public void CerrarSesion()
     {
-        Debug.Log("Cerrando sesión y borrando memoria...");
-        PlayerPrefs.SetInt("UsuarioLogueado", 0);
-        PlayerPrefs.Save();
+        Debug.Log("Cerrando sesión y borrando memoria temporal...");
+        sesionActiva = false; // Apagamos la variable estática
         IrAInicioSesion();
     }
 
@@ -102,58 +105,26 @@ public class GestorPantallas : MonoBehaviour
     }
 
     // ==========================================
-    // INICIO DEL JUEGO (PERSISTENCIA)
+    // INICIO DEL JUEGO (PERSISTENCIA TEMPORAL)
     // ==========================================
 
-   /* void Start()
+    void Start()
     {
-        // 1. Comprueba si venimos de jugar un nivel (Carrusel)
+        // 1. Comprueba si venimos de jugar un nivel
         if (PlayerPrefs.GetInt("AbrirCarrusel", 0) == 1)
         {
             PlayerPrefs.SetInt("AbrirCarrusel", 0);
             DesactivarTodasLasPantallas();
             pantallaSeleccionMapa.SetActive(true); 
         }
-        // 2. Comprueba si el usuario ya inició sesión antes
-        else if (PlayerPrefs.GetInt("UsuarioLogueado", 0) == 1)
+        // 2. Comprueba la memoria RAM (Variable estática)
+        else if (sesionActiva == true)
         {
-            Debug.Log("✓ Sesión recordada. Saltando al Menú Principal.");
+            Debug.Log("✓ Sesión activa en memoria RAM. Saltando al Menú Principal.");
             DesactivarTodasLasPantallas();
             pantallaMenu.SetActive(true);
         }
-        // 3. Si no hay datos, abre el Login normalmente
-        else
-        {
-            DesactivarTodasLasPantallas();
-            pantallaInicioSesion.SetActive(true); 
-        }
-    }*/
-
-     void Start()
-    {
-        // --- TRUCO DE DESARROLLADOR ---
-        // Quita las dos barras diagonales (//) de la línea de abajo para borrar la memoria de Unity.
-        // Cuando tu juego ya esté listo para publicarse, vuelve a ponerle las // para que recuerde a los jugadores.
-        
-        PlayerPrefs.DeleteAll(); 
-
-        // ------------------------------
-
-        // 1. Primero comprueba si venimos de jugar un nivel
-        if (PlayerPrefs.GetInt("AbrirCarrusel", 0) == 1)
-        {
-            PlayerPrefs.SetInt("AbrirCarrusel", 0);
-            DesactivarTodasLasPantallas();
-            pantallaSeleccionMapa.SetActive(true); 
-        }
-        // 2. Comprueba si el usuario ya inició sesión antes
-        else if (PlayerPrefs.GetInt("UsuarioLogueado", 0) == 1)
-        {
-            Debug.Log("✓ Sesión recordada. Saltando al Menú Principal.");
-            DesactivarTodasLasPantallas();
-            pantallaMenu.SetActive(true);
-        }
-        // 3. Si no hay nota ni sesión, abre el Login
+        // 3. Si abrimos el juego por primera vez, la variable será false
         else
         {
             DesactivarTodasLasPantallas();
@@ -183,19 +154,6 @@ public class GestorPantallas : MonoBehaviour
             return;
         }
 
-        // --- MODO DESARROLLO SIN AWS (TEMPORAL) ---
-       // Debug.Log("Simulando conexión a AWS... ¡Login Exitoso!");
-        
-        // Guardamos la sesión en memoria
-        //PlayerPrefs.SetInt("UsuarioLogueado", 1);
-        //PlayerPrefs.Save();
-        
-        // Entramos al menú principal
-        //IrAMenuPrincipal();
-        // ------------------------------------------
-
-        // NOTA: Cuando vuelvas a encender tu servidor AWS, borra el bloque "MODO DESARROLLO" 
-        // de arriba y quítale las dos barras (//) a la línea de abajo para activar la conexión real:
         StartCoroutine(EnviarPeticion("login", userLogin.text, passLogin.text));
     }
 
@@ -238,9 +196,8 @@ public class GestorPantallas : MonoBehaviour
                     if (accion == "registro") IrAInicioSesion();
                     else
                     {
-                        // Guardamos el Login en memoria real con AWS
-                        PlayerPrefs.SetInt("UsuarioLogueado", 1);
-                        PlayerPrefs.Save();
+                        // Encendemos la variable en la RAM tras loguearnos con éxito
+                        sesionActiva = true;
 
                         if (GestorDatosPartida.instancia != null)
                         {
