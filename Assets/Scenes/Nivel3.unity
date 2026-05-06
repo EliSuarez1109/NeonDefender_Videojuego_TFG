@@ -6992,7 +6992,7 @@ MonoBehaviour:
     prefabReal: {fileID: 8644672651147763296, guid: 7f1c1d731a95aeb4eae0e6aa2ea988f5, type: 3}
     prefabFantasma: {fileID: 8644672651147763296, guid: e2bddcb92c2242e45b271e615ed0af56, type: 3}
     costeActual: 100
-    multiplicadorCoste: 1.25
+    multiplicadorCoste: 1.1
     textoBoton: {fileID: 2134321026}
     imagenFondoBoton: {fileID: 1475830638}
   - nombre: Torre2
