@@ -6,7 +6,7 @@ using UnityEngine;
 public class PartidaJSON
 {
     public int id_user; // Lo obtendrías al hacer login
-    public string estado; // 'victoria', 'derrota', 'rendicion'
+    public string estado; // 'victoria', 'derrota', 'rendicion', 'infinito'
     public string nivel;  // 'facil', 'normal', 'dificil'
     public int dano_total_infligido;
     public int dano_total_recibido;
@@ -135,7 +135,11 @@ public class PartidaJSON
     // Método para establecer el resultado de la partida
     public void EstablecerEstado(string nuevoEstado)
     {
-        estado = nuevoEstado;
+        // Si el estado actual es "infinito", no lo cambiamos para mantenerlo en la BD
+        if (estado != "infinito")
+        {
+            estado = nuevoEstado;
+        }
     }
 
     // Método para establecer el nivel de dificultad

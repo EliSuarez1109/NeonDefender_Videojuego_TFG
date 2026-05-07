@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.Networking;
 using System.Collections;
+using System.Collections.Generic;
 
 public class GestorDatosPartida : MonoBehaviour
 {
@@ -55,6 +56,29 @@ public class GestorDatosPartida : MonoBehaviour
     public void RegistrarRondaCompletada() => datosPartida.RegistrarRondaCompletada();
     public void EstablecerEstado(string estado) => datosPartida.EstablecerEstado(estado);
     public void EstablecerNivel(string nombreNivel) => datosPartida.EstablecerNivel(nombreNivel);
+
+    // Método para resetear la partida al modo infinito
+    public void ResetearParaModoInfinito()
+    {
+        // Guardar lo que queremos conservar antes de resetear
+        int userId = datosPartida.id_user;
+        string nivelActual = datosPartida.nivel;
+        List<DetalleTorre> torresGuardadas = new List<DetalleTorre>();
+
+        foreach (DetalleTorre torre in datosPartida.torres)
+        {
+            torresGuardadas.Add(new DetalleTorre { nombre = torre.nombre, cantidad = torre.cantidad });
+        }
+
+        // Crear nueva instancia limpia
+        datosPartida = new PartidaJSON();
+
+        // Restaurar id_user, nivel y torres preservadas
+        datosPartida.id_user = userId;
+        datosPartida.nivel = nivelActual;
+        datosPartida.estado = "infinito";
+        datosPartida.torres = torresGuardadas;
+    }
 
     public void GuardarPartidaAWS()
     {

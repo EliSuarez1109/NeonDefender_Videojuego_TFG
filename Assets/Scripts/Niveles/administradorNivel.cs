@@ -104,13 +104,18 @@ public class AdministradorNivel : MonoBehaviour
         juegoFinalizado = false; // El juego vuelve a estar activo
         enModoInfinito = true;   // Activamos la bandera de modo infinito
 
-        // --- LA CONEXIÓN MÁGICA ---
-        // Le avisamos a tu otro script que configure sus variables infinitas
-        if (generadorEnemigos != null)
+        // Reseteamos los datos de la partida para el modo infinito
+        if (GestorDatosPartida.instancia != null)
+        {
+            GestorDatosPartida.instancia.ResetearParaModoInfinito();
+        }
+
+        // --------------------------
+
+         if (generadorEnemigos != null)
         {
             generadorEnemigos.ActivarModoInfinito();
         }
-        // --------------------------
 
         pantallaFinJuego.SetActive(false); // Cerramos el menú de victoria
         
