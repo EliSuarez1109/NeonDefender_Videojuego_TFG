@@ -4322,28 +4322,28 @@ MonoBehaviour:
     costeActual: 1250
     multiplicadorCoste: 1.25
     textoBoton: {fileID: 470582990}
-    imagenFondoBoton: {fileID: 1151309695}
+    imagenFondoBoton: {fileID: 356883517}
   - nombre: Veneno
     prefabReal: {fileID: 8644672651147763296, guid: e8372b03e2212f64fb840b6a2b8a42fe, type: 3}
     prefabFantasma: {fileID: 8644672651147763296, guid: c0278b952c8147a46ae61efc0ee8c864, type: 3}
     costeActual: 1500
     multiplicadorCoste: 1.25
     textoBoton: {fileID: 998035072}
-    imagenFondoBoton: {fileID: 1791715117}
+    imagenFondoBoton: {fileID: 1151309695}
   - nombre: Tesla
     prefabReal: {fileID: 8644672651147763296, guid: 476aa136d4f722e438509ab91548309f, type: 3}
     prefabFantasma: {fileID: 8644672651147763296, guid: eeb62be670233184bba72532eb76f461, type: 3}
     costeActual: 2000
     multiplicadorCoste: 1.25
     textoBoton: {fileID: 446392852}
-    imagenFondoBoton: {fileID: 356883517}
+    imagenFondoBoton: {fileID: 1637544360}
   - nombre: Perforante
     prefabReal: {fileID: 8644672651147763296, guid: 76f0bfe579edf1f428de917a363ffc96, type: 3}
     prefabFantasma: {fileID: 8644672651147763296, guid: 95c3564ba51348044a2d6bd94fbb315b, type: 3}
     costeActual: 3000
     multiplicadorCoste: 1.25
     textoBoton: {fileID: 136568446}
-    imagenFondoBoton: {fileID: 1637544360}
+    imagenFondoBoton: {fileID: 1791715117}
   capasBloqueadas:
     serializedVersion: 2
     m_Bits: 72
