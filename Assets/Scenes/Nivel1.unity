@@ -3503,7 +3503,7 @@ MonoBehaviour:
   botonEmpezar: {fileID: 2091313628}
   adminNivel: {fileID: 832059179}
   textoContadorRondas: {fileID: 543138695}
-  modoInfinitoActivo: 1
+  modoInfinitoActivo: 0
   gruposInicialesInfinito: 5
   poolGruposInfinitos:
   - nombreGrupo: NaranjasTier1
@@ -4120,6 +4120,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f4446724647dc4fe09acec9a4d91021b, type: 3}
+--- !u!1 &2039785811 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8860973185351317196, guid: f4446724647dc4fe09acec9a4d91021b, type: 3}
+  m_PrefabInstance: {fileID: 2039785810}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &2088177165
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4147,6 +4152,18 @@ PrefabInstance:
     - target: {fileID: 3440356815479795792, guid: 834eadcae9b30440a84e8009e5b8d70a, type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3477054456965221238, guid: 834eadcae9b30440a84e8009e5b8d70a, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 832059179}
+    - target: {fileID: 3477054456965221238, guid: 834eadcae9b30440a84e8009e5b8d70a, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: IniciarModoInfinito
+      objectReference: {fileID: 0}
+    - target: {fileID: 3477054456965221238, guid: 834eadcae9b30440a84e8009e5b8d70a, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: AdministradorNivel, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 3559363804073697872, guid: 834eadcae9b30440a84e8009e5b8d70a, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
@@ -4305,6 +4322,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 834eadcae9b30440a84e8009e5b8d70a, type: 3}
+--- !u!1 &2088177166 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6849005828099751576, guid: 834eadcae9b30440a84e8009e5b8d70a, type: 3}
+  m_PrefabInstance: {fileID: 2088177165}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &2091313628 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5070931262595142274, guid: f4446724647dc4fe09acec9a4d91021b, type: 3}
@@ -4566,6 +4588,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2317475199118180843, guid: 62db79d7096a146c0884db11239f3cc1, type: 3}
+      propertyPath: hudPrincipal
+      value: 
+      objectReference: {fileID: 2039785811}
+    - target: {fileID: 2317475199118180843, guid: 62db79d7096a146c0884db11239f3cc1, type: 3}
       propertyPath: txtResultado
       value: 
       objectReference: {fileID: 1046981319}
@@ -4573,6 +4599,14 @@ PrefabInstance:
       propertyPath: pantallaFinJuego
       value: 
       objectReference: {fileID: 2102244035}
+    - target: {fileID: 2317475199118180843, guid: 62db79d7096a146c0884db11239f3cc1, type: 3}
+      propertyPath: botonModoInfinito
+      value: 
+      objectReference: {fileID: 2088177166}
+    - target: {fileID: 2317475199118180843, guid: 62db79d7096a146c0884db11239f3cc1, type: 3}
+      propertyPath: generadorEnemigos
+      value: 
+      objectReference: {fileID: 2035053315}
     - target: {fileID: 2317475199118180843, guid: 62db79d7096a146c0884db11239f3cc1, type: 3}
       propertyPath: pantallaEstadisticas
       value: 

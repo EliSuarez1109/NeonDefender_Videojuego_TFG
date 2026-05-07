@@ -1345,6 +1345,11 @@ Transform:
   m_Children: []
   m_Father: {fileID: 689680175}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &337225270 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8860973185351317196, guid: f4446724647dc4fe09acec9a4d91021b, type: 3}
+  m_PrefabInstance: {fileID: 1252655764}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &340537503
 GameObject:
   m_ObjectHideFlags: 0
@@ -3546,6 +3551,18 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3477054456965221238, guid: 834eadcae9b30440a84e8009e5b8d70a, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1594557475}
+    - target: {fileID: 3477054456965221238, guid: 834eadcae9b30440a84e8009e5b8d70a, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: IniciarModoInfinito
+      objectReference: {fileID: 0}
+    - target: {fileID: 3477054456965221238, guid: 834eadcae9b30440a84e8009e5b8d70a, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: AdministradorNivel, Assembly-CSharp
+      objectReference: {fileID: 0}
     - target: {fileID: 3559363804073697872, guid: 834eadcae9b30440a84e8009e5b8d70a, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
@@ -3722,6 +3739,11 @@ MonoBehaviour:
 --- !u!1 &1071834814 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3440356815479795792, guid: 834eadcae9b30440a84e8009e5b8d70a, type: 3}
+  m_PrefabInstance: {fileID: 1071834811}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1071834815 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6849005828099751576, guid: 834eadcae9b30440a84e8009e5b8d70a, type: 3}
   m_PrefabInstance: {fileID: 1071834811}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &1149337373
@@ -5947,6 +5969,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2317475199118180843, guid: 62db79d7096a146c0884db11239f3cc1, type: 3}
+      propertyPath: hudPrincipal
+      value: 
+      objectReference: {fileID: 337225270}
+    - target: {fileID: 2317475199118180843, guid: 62db79d7096a146c0884db11239f3cc1, type: 3}
       propertyPath: txtResultado
       value: 
       objectReference: {fileID: 1071834813}
@@ -5954,6 +5980,14 @@ PrefabInstance:
       propertyPath: pantallaFinJuego
       value: 
       objectReference: {fileID: 1071834814}
+    - target: {fileID: 2317475199118180843, guid: 62db79d7096a146c0884db11239f3cc1, type: 3}
+      propertyPath: botonModoInfinito
+      value: 
+      objectReference: {fileID: 1071834815}
+    - target: {fileID: 2317475199118180843, guid: 62db79d7096a146c0884db11239f3cc1, type: 3}
+      propertyPath: generadorEnemigos
+      value: 
+      objectReference: {fileID: 2035053318}
     - target: {fileID: 2317475199118180843, guid: 62db79d7096a146c0884db11239f3cc1, type: 3}
       propertyPath: pantallaEstadisticas
       value: 
@@ -8133,6 +8167,9 @@ MonoBehaviour:
   botonEmpezar: {fileID: 1666387138}
   adminNivel: {fileID: 1594557475}
   textoContadorRondas: {fileID: 295188790}
+  modoInfinitoActivo: 0
+  gruposInicialesInfinito: 5
+  poolGruposInfinitos: []
 --- !u!114 &2035053318
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8380,6 +8417,9 @@ MonoBehaviour:
   botonEmpezar: {fileID: 1666387138}
   adminNivel: {fileID: 1594557475}
   textoContadorRondas: {fileID: 295188790}
+  modoInfinitoActivo: 0
+  gruposInicialesInfinito: 5
+  poolGruposInfinitos: []
 --- !u!1 &2094424242
 GameObject:
   m_ObjectHideFlags: 0
