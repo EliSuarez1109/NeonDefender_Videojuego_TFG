@@ -11,7 +11,7 @@ public class GrupoEnemigos
     public int cantidad;
     public float tiempoEntreEllos = 1.5f;
     public float tiempoEsperaDespues = 3.0f;
-    public string nombreEnemigoDB = ""; // Nombre del enemigo para la BD (si está vacío, usa el nombre del prefab)
+    public string nombreEnemigoDB = ""; 
 }
 
 [System.Serializable]
@@ -38,24 +38,35 @@ public class GeneradorEnemigos : MonoBehaviour
     [Header("HUD de Rondas")]
     public TextMeshProUGUI textoContadorRondas;
 
-    // --- NUEVO: FUNCIÓN START ---
-    // Esta función se ejecuta sola una vez al empezar el nivel
+    // --- MODO INFINITO ---
+    [Header("Modo Infinito")]
+    public bool modoInfinitoActivo = false; 
+    private int nivelInfinitoActual = 1; 
+    
+    [Tooltip("¿Cuántos grupos aleatorios salen en la primera ronda infinita?")]
+    public int gruposInicialesInfinito = 5;
+    
+    [Tooltip("Crea aquí todas las plantillas de enemigos que el juego puede elegir al azar")]
+    public GrupoEnemigos[] poolGruposInfinitos;
+    // ---------------------
+
     void Start()
     {
-        // Preparamos el texto para que muestre la ronda 1 desde el principio
         ActualizarTextoRondas(1);
     }
-    // ----------------------------
 
     public void EmpezarSiguienteRonda()
     {
-        if (indiceRondaActual < rondas.Length)
+        // Si estamos en modo infinito...
+        if (modoInfinitoActivo)
         {
-            // --- NUEVO ---
-            // Actualizamos el texto a la ronda que está a punto de salir
+            ActualizarTextoRondas(nivelInfinitoActual);
+            StartCoroutine(SpawnRondaInfinita());
+        }
+        // Si estamos en las rondas normales...
+        else if (indiceRondaActual < rondas.Length)
+        {
             ActualizarTextoRondas(indiceRondaActual + 1); 
-            // -------------
-
             StartCoroutine(SpawnRonda(rondas[indiceRondaActual]));
             indiceRondaActual++;
         }
@@ -65,60 +76,92 @@ public class GeneradorEnemigos : MonoBehaviour
         }
     }
 
+    // --- RUTINA NORMAL ---
     IEnumerator SpawnRonda(Ronda rondaActual)
     {
-        // 1. BLOQUEAMOS EL BOTÓN
-        if (botonEmpezar != null) 
-        {
-            botonEmpezar.interactable = false;
-        }
+        if (botonEmpezar != null) botonEmpezar.interactable = false;
 
-        // 2. Soltamos a todos los enemigos de la ronda
         foreach (GrupoEnemigos grupo in rondaActual.grupos)
         {
             for (int i = 0; i < grupo.cantidad; i++)
             {
-                CrearEnemigo(grupo.prefabEnemigo);
+                // Ahora pasamos también el nombre de la BD que creaste
+                CrearEnemigo(grupo.prefabEnemigo, grupo.nombreEnemigoDB);
                 yield return new WaitForSeconds(grupo.tiempoEntreEllos);
             }
             yield return new WaitForSeconds(grupo.tiempoEsperaDespues);
         }
 
-        // --- LA MAGIA NUEVA: EL VIGILANTE ---
-        // Mientras siga existiendo al menos un objeto con el Tag "Enemigo" en el juego...
         while (GameObject.FindGameObjectWithTag("Enemigo") != null)
         {
-            // ...esperamos medio segundo y volvemos a mirar (así no saturamos el procesador)
             yield return new WaitForSeconds(0.5f); 
         }
-        // ------------------------------------
 
         Debug.Log("¡Mapa limpio! Ronda completada.");
 
-        // Registrar la ronda completada
         if (GestorDatosPartida.instancia != null)
         {
             GestorDatosPartida.instancia.RegistrarRondaCompletada();
         }
 
-        // 3. DESBLOQUEAMOS EL BOTÓN para la siguiente ronda
-        if (botonEmpezar != null) 
-        {
-            botonEmpezar.interactable = true;
-        }
+        if (botonEmpezar != null) botonEmpezar.interactable = true;
 
-        // Si ya no quedan rondas y la base sigue en pie, mostramos victoria
         if (indiceRondaActual >= rondas.Length && adminNivel != null && !adminNivel.juegoFinalizado)
         {
             adminNivel.MostrarVictoria();
+            // ¡AQUÍ ES DONDE TERMINA EL JUEGO NORMAL! 
+            // Tu pantalla de victoria será la encargada de llamar a ActivarModoInfinito() si el jugador quiere seguir.
         }
         else
         {
-            // --- NUEVO ---
-            // Si aún quedan rondas, actualizamos el texto para que anuncie la siguiente
             ActualizarTextoRondas(indiceRondaActual + 1);
-            // -------------
         }
+    }
+
+    // --- RUTINA INFINITA ---
+    IEnumerator SpawnRondaInfinita()
+    {
+        if (poolGruposInfinitos == null || poolGruposInfinitos.Length == 0)
+        {
+            Debug.LogError("¡No hay grupos en el Pool Infinito! Añádelos en el Inspector.");
+            yield break;
+        }
+
+        if (botonEmpezar != null) botonEmpezar.interactable = false;
+
+        // Calculamos cuántos grupos tocan (Nivel 1 = gruposIniciales, Nivel 2 = iniciales + 1, etc.)
+        int cantidadGruposEstaRonda = gruposInicialesInfinito + (nivelInfinitoActual - 1);
+
+        for (int g = 0; g < cantidadGruposEstaRonda; g++)
+        {
+            int indiceAleatorio = Random.Range(0, poolGruposInfinitos.Length);
+            GrupoEnemigos grupoElegido = poolGruposInfinitos[indiceAleatorio];
+
+            for (int i = 0; i < grupoElegido.cantidad; i++)
+            {
+                CrearEnemigo(grupoElegido.prefabEnemigo, grupoElegido.nombreEnemigoDB);
+                yield return new WaitForSeconds(grupoElegido.tiempoEntreEllos);
+            }
+            yield return new WaitForSeconds(grupoElegido.tiempoEsperaDespues);
+        }
+
+        while (GameObject.FindGameObjectWithTag("Enemigo") != null)
+        {
+            yield return new WaitForSeconds(0.5f);
+        }
+
+        Debug.Log("¡Oleada Infinita " + nivelInfinitoActual + " superada!");
+
+        // Registramos también las rondas infinitas en la BD
+        if (GestorDatosPartida.instancia != null)
+        {
+            GestorDatosPartida.instancia.RegistrarRondaCompletada();
+        }
+
+        nivelInfinitoActual++; 
+        ActualizarTextoRondas(nivelInfinitoActual); // Preparamos el texto para la siguiente
+
+        if (botonEmpezar != null) botonEmpezar.interactable = true;
     }
 
     void CrearEnemigo(GameObject prefab, string nombreEnemigoDB = "")
@@ -131,10 +174,8 @@ public class GeneradorEnemigos : MonoBehaviour
             if (scriptEnemigo != null)
             {
                 scriptEnemigo.puntos = puntosCamino;
-                // Usar el nombre de BD si se proporciona, si no, usar el nombre del prefab
                 scriptEnemigo.nombreEnemigo = !string.IsNullOrEmpty(nombreEnemigoDB) ? nombreEnemigoDB : prefab.name;
 
-                // Registrar el enemigo como activo
                 if (GestorDatosPartida.instancia != null)
                 {
                     GestorDatosPartida.instancia.AgregarEnemigoActivo(scriptEnemigo.nombreEnemigo);
@@ -143,16 +184,29 @@ public class GeneradorEnemigos : MonoBehaviour
         }
     }
 
-    // Esta función actualiza el texto usando el tamaño automático de tu lista
     public void ActualizarTextoRondas(int numeroDeRondaActual)
     {
         if (textoContadorRondas != null)
         {
-            // Nos aseguramos de que el número visual no supere el total de rondas
-            int rondaVisual = Mathf.Min(numeroDeRondaActual, rondas.Length);
-
-            // rondas.Length detectará automáticamente si este nivel tiene 3, 5 o 20 rondas
-            textoContadorRondas.text = rondaVisual + " / " + rondas.Length;
+            if (modoInfinitoActivo)
+            {
+                // Si estamos en infinito, el texto cambia a este formato
+                textoContadorRondas.text = "Infinita: " + numeroDeRondaActual;
+            }
+            else
+            {
+                // Formato normal (Ej: 10 / 10)
+                int rondaVisual = Mathf.Min(numeroDeRondaActual, rondas.Length);
+                textoContadorRondas.text = rondaVisual + " / " + rondas.Length;
+            }
         }
+    }
+
+    // --- FUNCIÓN PÚBLICA PARA ACTIVAR DESDE LA PANTALLA DE VICTORIA ---
+    public void ActivarModoInfinito()
+    {
+        modoInfinitoActivo = true;
+        ActualizarTextoRondas(nivelInfinitoActual);
+        Debug.Log("Modo Infinito Activado. Esperando a que el jugador pulse Empezar.");
     }
 }
