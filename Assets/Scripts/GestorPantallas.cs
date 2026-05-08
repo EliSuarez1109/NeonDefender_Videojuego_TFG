@@ -9,9 +9,9 @@ using UnityEngine.SceneManagement;
 public class GestorPantallas : MonoBehaviour
 {
     // --- NUEVA VARIABLE DE MEMORIA TEMPORAL ---
-    // Al ser 'static', sobrevive a los cambios de escena, pero se borra al cerrar el juego.
+																							
     public static bool sesionActiva = false;
-    // ------------------------------------------
+												 
 
     [Header("Conecta tus pantallas aquí")]
     public GameObject pantallaInicioSesion;
@@ -39,6 +39,7 @@ public class GestorPantallas : MonoBehaviour
 
     [Header("Configuración AWS")]
     public string apiURL = "https://pr3m2sbom5.execute-api.us-east-1.amazonaws.com/default/L_Unity_Login_towerdefens";
+    public string urlHistorial = "https://688mn3wjo2.execute-api.us-east-1.amazonaws.com/default/L_Unity_Historial_towerdefender"; // URL de la nueva Lambda de historial
 
     // ==========================================
     // NAVEGACIÓN BÁSICA
@@ -62,10 +63,18 @@ public class GestorPantallas : MonoBehaviour
         pantallaMenu.SetActive(true);
     }
 
+    // cada vez que abre el historial, se refresca con los datos más recientes de AWS
     public void AbrirHistorial()
     {
         DesactivarTodasLasPantallas();
         pantallaHistorial.SetActive(true);
+
+        // Si tenemos un ID de usuario, pedimos el historial actualizado
+        if (GestorDatosPartida.instancia != null && GestorDatosPartida.instancia.datosPartida.id_user != 0)
+        {
+            int idActual = GestorDatosPartida.instancia.datosPartida.id_user;
+            StartCoroutine(ObtenerHistorialActualizado(idActual));
+        }
     }
 
     public void AbrirEstadisticas()
@@ -84,11 +93,11 @@ public class GestorPantallas : MonoBehaviour
         pantallaConfiguracion.SetActive(true);
     }
 
-    // Función para cerrar la sesión manualmente
+												  
     public void CerrarSesion()
     {
         Debug.Log("Cerrando sesión y borrando memoria temporal...");
-        sesionActiva = false; // Apagamos la variable estática
+        sesionActiva = false; 
         IrAInicioSesion();
     }
 
@@ -105,26 +114,26 @@ public class GestorPantallas : MonoBehaviour
     }
 
     // ==========================================
-    // INICIO DEL JUEGO (PERSISTENCIA TEMPORAL)
+    // INICIO DEL JUEGO
     // ==========================================
 
     void Start()
     {
-        // 1. Comprueba si venimos de jugar un nivel
+		// 1. Comprueba si venimos de jugar un nivel											
         if (PlayerPrefs.GetInt("AbrirCarrusel", 0) == 1)
         {
             PlayerPrefs.SetInt("AbrirCarrusel", 0);
             DesactivarTodasLasPantallas();
             pantallaSeleccionMapa.SetActive(true); 
         }
-        // 2. Comprueba la memoria RAM (Variable estática)
+		// 2. Comprueba la memoria RAM (Variable estática)												   
         else if (sesionActiva == true)
         {
             Debug.Log("✓ Sesión activa en memoria RAM. Saltando al Menú Principal.");
             DesactivarTodasLasPantallas();
             pantallaMenu.SetActive(true);
         }
-        // 3. Si abrimos el juego por primera vez, la variable será false
+		// 3. Si abrimos el juego por primera vez, la variable será false																  
         else
         {
             DesactivarTodasLasPantallas();
@@ -163,7 +172,7 @@ public class GestorPantallas : MonoBehaviour
     }
 
     // ==========================================
-    // CORRUTINA DE RED (AWS)
+    // CORRUTINAS DE RED (AWS)
     // ==========================================
 
     IEnumerator EnviarPeticion(string accion, string user, string pass)
@@ -196,7 +205,7 @@ public class GestorPantallas : MonoBehaviour
                     if (accion == "registro") IrAInicioSesion();
                     else
                     {
-                        // Encendemos la variable en la RAM tras loguearnos con éxito
+						 // Encendemos la variable en la RAM tras loguearnos con éxito															  
                         sesionActiva = true;
 
                         if (GestorDatosPartida.instancia != null)
@@ -210,9 +219,34 @@ public class GestorPantallas : MonoBehaviour
                         }
 
                         IrAMenuPrincipal();
-                        ActualizarHistorialReal(request.downloadHandler.text);
                     } 
                 }
+            }
+        }
+    }
+
+    // CORRUTINA: Para refrescar el historial en tiempo real sin re-loguear
+    IEnumerator ObtenerHistorialActualizado(int idUsuario)
+    {
+        // Creamos un objeto simple para enviar el id_user a la nueva Lambda
+        string json = "{\"id_user\":" + idUsuario + "}";
+
+        using (UnityWebRequest request = new UnityWebRequest(urlHistorial, "POST"))
+        {
+            byte[] bodyRaw = System.Text.Encoding.UTF8.GetBytes(json);
+            request.uploadHandler = new UploadHandlerRaw(bodyRaw);
+            request.downloadHandler = new DownloadHandlerBuffer();
+            request.SetRequestHeader("Content-Type", "application/json");
+
+            yield return request.SendWebRequest();
+
+            if (request.result == UnityWebRequest.Result.Success)
+            {
+                ActualizarHistorialReal(request.downloadHandler.text);
+            }
+            else
+            {
+                Debug.LogError("Error actualizando historial: " + request.error);
             }
         }
     }
