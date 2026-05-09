@@ -150,6 +150,7 @@ GameObject:
   - component: {fileID: 6029005408255513650}
   - component: {fileID: 1307348421885804801}
   - component: {fileID: 408213900084780002}
+  - component: {fileID: 5165168125375385588}
   - component: {fileID: 3309650791251301038}
   m_Layer: 5
   m_Name: btnIdioma
@@ -216,6 +217,20 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &5165168125375385588
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7243952121867397315}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0be8fc3928a4e46c48316e01225cd518, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BanderaBtn
+  banderaEspana: {fileID: 21300000, guid: ca0102b66f6d042f0bef9e8dc9c7d608, type: 3}
+  banderaInglaterra: {fileID: 21300000, guid: 48c180cd2e1534f88a630d8b01389a46, type: 3}
 --- !u!114 &3309650791251301038
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -259,4 +274,16 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 408213900084780002}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 7746390305830316523, guid: 6e86098ed1cb541a89ac4b0435a754ad, type: 3}
+        m_TargetAssemblyTypeName: GestorIdiomas, Assembly-CSharp
+        m_MethodName: AlternarIdioma
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2

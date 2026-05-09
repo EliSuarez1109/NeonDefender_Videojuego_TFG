@@ -103,7 +103,7 @@ public class GestorTorres : MonoBehaviour
                     // 2. Le aplicamos tu porcentaje (ej: el 75% de 1000)
                     int valorReembolso = Mathf.RoundToInt(valorUltimaTorre * (porcentajeReembolso / 100f));
 
-                    textoPrecioVenta.text =  "Vender" + "\n" + valorReembolso.ToString() + " Oro";
+                    textoPrecioVenta.text = GestorIdiomas.ObtenerTextoVenderConPrecio(valorReembolso);
                 }
 
                 // ELIMINADO: Las líneas que movían el botón siguiendo la posición del ratón o la torre.

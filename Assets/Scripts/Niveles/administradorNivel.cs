@@ -8,10 +8,7 @@ public class AdministradorNivel : MonoBehaviour
     public GameObject hudPrincipal; 
     public GameObject pantallaFinJuego; 
     public GameObject pantallaEstadisticas; 
-    
-    // --- NUEVO: PANTALLA DE CONFIGURACIÓN / PAUSA ---
     public GameObject pantallaConfiguracion; 
-    // ------------------------------------------------
 
     [Header("Conexiones")]
     public GeneradorEnemigos generadorEnemigos; 
@@ -21,57 +18,55 @@ public class AdministradorNivel : MonoBehaviour
 
     [Header("Textos")]
     public TMP_Text txtResultado;
+    // --- NUEVO: Título de la pantalla de Estadísticas ---
+    public TMP_Text txtTituloEstadisticas;
 
     [Header("Estado del juego")]
     public bool juegoFinalizado = false;
     public bool enModoInfinito = false; 
     
-    // --- NUEVO: Control de pausa ---
     private bool juegoPausado = false;
-    // -------------------------------
 
     void Start()
     {
         if (hudPrincipal != null) hudPrincipal.SetActive(true);
         if (pantallaFinJuego != null) pantallaFinJuego.SetActive(false);
         if (botonModoInfinito != null) botonModoInfinito.SetActive(false);
-        
-        // Nos aseguramos de que el menú de configuración esté apagado al empezar
         if (pantallaConfiguracion != null) pantallaConfiguracion.SetActive(false);
+
+        // --- TRADUCIR EL TÍTULO DE ESTADÍSTICAS AL INICIAR ---
+        if (txtTituloEstadisticas != null)
+        {
+            int idioma = PlayerPrefs.GetInt("IdiomaActual", 0);
+            txtTituloEstadisticas.text = (idioma == 0) ? "Estadísticas" : "Statistics";
+        }
     }
 
-    // --- NUEVO: VIGILAMOS EL TECLADO EN TODO MOMENTO ---
     void Update()
     {
-        // Si el juego ya terminó (ganaste o perdiste), no hacemos nada con el ESC
         if (juegoFinalizado) return;
 
-        // Si el jugador pulsa la tecla Escape
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             AlternarPausa();
         }
     }
 
-    // --- NUEVO: INTERRUPTOR DE PAUSA ---
     public void AlternarPausa()
     {
-        juegoPausado = !juegoPausado; // Invertimos el estado (de falso a verdadero y viceversa)
+        juegoPausado = !juegoPausado; 
 
         if (juegoPausado)
         {
-            // PAUSAR EL JUEGO
-            Time.timeScale = 0f; // Congelamos el tiempo
-            if (pantallaConfiguracion != null) pantallaConfiguracion.SetActive(true); // Mostramos el menú
+            Time.timeScale = 0f; 
+            if (pantallaConfiguracion != null) pantallaConfiguracion.SetActive(true); 
         }
         else
         {
-            // REANUDAR EL JUEGO
-            Time.timeScale = 1f; // Descongelamos el tiempo
-            if (pantallaConfiguracion != null) pantallaConfiguracion.SetActive(false); // Ocultamos el menú
+            Time.timeScale = 1f; 
+            if (pantallaConfiguracion != null) pantallaConfiguracion.SetActive(false); 
         }
     }
-    // ------------------------------------
 
     public void MostrarDerrota()
     {
@@ -89,9 +84,11 @@ public class AdministradorNivel : MonoBehaviour
 
         pantallaFinJuego.SetActive(true);
         pantallaEstadisticas.SetActive(false); 
-        if (pantallaConfiguracion != null) pantallaConfiguracion.SetActive(false); // Por seguridad, ocultamos config
+        if (pantallaConfiguracion != null) pantallaConfiguracion.SetActive(false); 
 
-        txtResultado.text = "¡BASE DESTRUIDA!";
+        // --- MAGIA DEL IDIOMA ---
+        int idioma = PlayerPrefs.GetInt("IdiomaActual", 0);
+        txtResultado.text = (idioma == 0) ? "¡BASE DESTRUIDA!" : "BASE DESTROYED!";
         txtResultado.color = Color.red; 
         Time.timeScale = 0f; 
     }
@@ -113,9 +110,11 @@ public class AdministradorNivel : MonoBehaviour
 
         pantallaFinJuego.SetActive(true);
         pantallaEstadisticas.SetActive(false); 
-        if (pantallaConfiguracion != null) pantallaConfiguracion.SetActive(false); // Por seguridad, ocultamos config
+        if (pantallaConfiguracion != null) pantallaConfiguracion.SetActive(false); 
 
-        txtResultado.text = "¡VICTORIA!";
+        // --- MAGIA DEL IDIOMA ---
+        int idioma = PlayerPrefs.GetInt("IdiomaActual", 0);
+        txtResultado.text = (idioma == 0) ? "¡VICTORIA!" : "VICTORY!";
         txtResultado.color = Color.green; 
         Time.timeScale = 0f; 
     }
@@ -136,9 +135,11 @@ public class AdministradorNivel : MonoBehaviour
 
         pantallaFinJuego.SetActive(true);
         pantallaEstadisticas.SetActive(false); 
-        if (pantallaConfiguracion != null) pantallaConfiguracion.SetActive(false); // Por seguridad, ocultamos config
+        if (pantallaConfiguracion != null) pantallaConfiguracion.SetActive(false); 
 
-        txtResultado.text = "¡TE HAS RENDIDO!"; 
+        // --- MAGIA DEL IDIOMA ---
+        int idioma = PlayerPrefs.GetInt("IdiomaActual", 0);
+        txtResultado.text = (idioma == 0) ? "¡TE HAS RENDIDO!" : "YOU SURRENDERED!"; 
         txtResultado.color = new Color(1f, 0.5f, 0f); 
         Time.timeScale = 0f; 
     }

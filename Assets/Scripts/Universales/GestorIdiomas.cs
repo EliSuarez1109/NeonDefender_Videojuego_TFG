@@ -1,14 +1,8 @@
 using UnityEngine;
 using TMPro;
-using UnityEngine.UI; // <- ¡NUEVO! Necesario para trabajar con Imágenes
 
 public class GestorIdiomas : MonoBehaviour
 {
-    [Header("Icono del Botón de Idioma")]
-    public Image iconoBandera; 
-    public Sprite banderaEspana;
-    public Sprite banderaInglaterra;
-
     [Header("Pantalla: Menú Principal")]
     public TMP_Text txtTituloHistorial;
     public TMP_Text txtTituloConfiguracion;
@@ -20,31 +14,40 @@ public class GestorIdiomas : MonoBehaviour
     public TMP_Text txtNuevaPartida;
 
     [Header("Pantalla: Login")]
-    [Header("Textos Únicos (Login & Registro)")]
     public TMP_Text txtIniciarSesion;
     public TMP_Text txtCrearCuenta;
-    public TMP_Text txtBtnContinuar; 
+    public TMP_Text txtBtnContinuar;
 
-    [Header("Textos Repetidos (Etiquetas)")]
-    [Tooltip("Arrastra aquí los textos 'Usuario' de Login y Registro")]
+    [Header("Textos de Niveles (Partidas)")]
+    public TMP_Text txtBtnEmpezar;
+    public TMP_Text txtBtnVender;
+
+    // --- NUEVO: PANTALLA FIN DE PARTIDA / ESTADÍSTICAS ---
+    [Header("Pantalla: Fin de Partida")]
+    public TMP_Text txtBtnModoInfinito;
+    public TMP_Text txtBtnNuevaPartidaFin; // Le pongo "Fin" para no confundirlo con el del menú principal
+    public TMP_Text txtBtnEstadisticas;
+    public TMP_Text txtBtnMenuPrincipal;
+    public TMP_Text txtTituloEstadisticas;
+    // ------------------------------------------------------
+
+    [Header("Etiquetas repetidas")]
     public TMP_Text[] listaTxtUsuario;
-    
-    [Tooltip("Arrastra aquí los textos 'Contraseña' de Login y Registro")]
     public TMP_Text[] listaTxtContrasena;
 
-    [Header("Textos Repetidos (Placeholders)")]
-    [Tooltip("Arrastra aquí los placeholders de Usuario")]
+    [Header("Placeholders repetidos")]
     public TMP_Text[] listaPlaceholderUsuario;
-    
-    [Tooltip("Arrastra aquí los placeholders de Contraseña")]
     public TMP_Text[] listaPlaceholderContrasena;
 
     [Header("Botones Repetidos")]
-    [Tooltip("Arrastra aquí todos los textos de botones que digan 'Salir'")]
-    public TMP_Text[] listaBtnSalir; 
-    
-    [Tooltip("Arrastra aquí todos los textos de botones que digan 'Crear'")]
+    public TMP_Text[] listaBtnSalir;
     public TMP_Text[] listaBtnCrear;
+
+    [Header("Pantalla: Configuración")]
+    public TMP_Text txtMusica;
+    public TMP_Text txtEfectos;
+    public TMP_Text txtResolucion;
+    public TMP_Dropdown dropdownPantalla;
 
     void Start()
     {
@@ -61,7 +64,20 @@ public class GestorIdiomas : MonoBehaviour
     {
         PlayerPrefs.SetInt("IdiomaActual", id);
         PlayerPrefs.Save();
+
         ActualizarTextos();
+
+        BanderaBtn[] todosLosBotones = Resources.FindObjectsOfTypeAll<BanderaBtn>();
+        foreach (BanderaBtn btn in todosLosBotones)
+        {
+            btn.ActualizarBandera();
+        }
+
+        CarruselDificultad[] carruseles = Resources.FindObjectsOfTypeAll<CarruselDificultad>();
+        foreach (CarruselDificultad c in carruseles)
+        {
+            c.ActualizarPantalla();
+        }
     }
 
     private void ActualizarTextos()
@@ -70,68 +86,84 @@ public class GestorIdiomas : MonoBehaviour
 
         if (idioma == 0) // --- ESPAÑOL ---
         {
-            // --- NUEVO: Cambiar la bandera ---
-            if (iconoBandera != null && banderaEspana != null) 
-            {
-                iconoBandera.sprite = banderaEspana;
-            }
-
-            // Menú Principal
             if (txtTituloHistorial != null) txtTituloHistorial.text = "Historial";
             if (txtTituloConfiguracion != null) txtTituloConfiguracion.text = "Configuración";
             if (txtBtnJugar != null) txtBtnJugar.text = "Jugar";
             if (txtBtnHistorial != null) txtBtnHistorial.text = "Historial";
-            if (txtBtnConfiguracion != null) txtBtnConfiguracion.text = "Configuracion";
+            if (txtBtnConfiguracion != null) txtBtnConfiguracion.text = "Configuración";
 
-            // Pantalla: Jugar
             if (txtNuevaPartida != null) txtNuevaPartida.text = "Nueva Partida";
-
-            // Textos Únicos
             if (txtIniciarSesion != null) txtIniciarSesion.text = "Iniciar sesión";
             if (txtCrearCuenta != null) txtCrearCuenta.text = "Crear Cuenta";
-            if (txtBtnContinuar != null) txtBtnContinuar.text = "Continuar"; 
+            if (txtBtnContinuar != null) txtBtnContinuar.text = "Continuar";
 
-            // Listas Dinámicas (Etiquetas y Placeholders)
+            if (txtMusica != null) txtMusica.text = "Música";
+            if (txtEfectos != null) txtEfectos.text = "Efectos";
+            if (txtResolucion != null) txtResolucion.text = "Resolución";
+
+            if (dropdownPantalla != null && dropdownPantalla.options.Count >= 2)
+            {
+                dropdownPantalla.options[0].text = "Pantalla Completa";
+                dropdownPantalla.options[1].text = "Ventana con Bordes";
+                dropdownPantalla.captionText.text = dropdownPantalla.options[dropdownPantalla.value].text;
+            }
+
+            if (txtBtnEmpezar != null) txtBtnEmpezar.text = "Empezar";
+            if (txtBtnVender != null) txtBtnVender.text = "Vender";
+
+            // --- TRADUCCIÓN FIN DE PARTIDA ---
+            if (txtBtnModoInfinito != null) txtBtnModoInfinito.text = "Modo Infinito";
+            if (txtBtnNuevaPartidaFin != null) txtBtnNuevaPartidaFin.text = "Nueva Partida";
+            if (txtBtnEstadisticas != null) txtBtnEstadisticas.text = "Estadísticas";
+            if (txtBtnMenuPrincipal != null) txtBtnMenuPrincipal.text = "Menú Principal";
+            if (txtTituloEstadisticas != null) txtTituloEstadisticas.text = "Estadísticas";
+
             TraducirLista(listaTxtUsuario, "Usuario");
             TraducirLista(listaTxtContrasena, "Contraseña");
             TraducirLista(listaPlaceholderUsuario, "Ingrese su usuario...");
             TraducirLista(listaPlaceholderContrasena, "Ingrese su contraseña...");
-
-            // Listas Dinámicas (Botones)
-            TraducirLista(listaBtnSalir, "Salir"); 
+            TraducirLista(listaBtnSalir, "Salir");
             TraducirLista(listaBtnCrear, "Crear");
         }
         else // --- INGLÉS ---
         {
-            // --- NUEVO: Cambiar la bandera ---
-            if (iconoBandera != null && banderaInglaterra != null) 
-            {
-                iconoBandera.sprite = banderaInglaterra;
-            }
-
-            // Menú Principal
             if (txtTituloHistorial != null) txtTituloHistorial.text = "History";
             if (txtTituloConfiguracion != null) txtTituloConfiguracion.text = "Settings";
             if (txtBtnJugar != null) txtBtnJugar.text = "Play";
             if (txtBtnHistorial != null) txtBtnHistorial.text = "History";
             if (txtBtnConfiguracion != null) txtBtnConfiguracion.text = "Settings";
 
-            // Pantalla: Jugar
             if (txtNuevaPartida != null) txtNuevaPartida.text = "New Game";
-
-            // Textos Únicos
             if (txtIniciarSesion != null) txtIniciarSesion.text = "Login";
             if (txtCrearCuenta != null) txtCrearCuenta.text = "Create Account";
-            if (txtBtnContinuar != null) txtBtnContinuar.text = "Continue"; 
+            if (txtBtnContinuar != null) txtBtnContinuar.text = "Continue";
 
-            // Listas Dinámicas (Etiquetas y Placeholders)
+            if (txtMusica != null) txtMusica.text = "Music";
+            if (txtEfectos != null) txtEfectos.text = "Effects";
+            if (txtResolucion != null) txtResolucion.text = "Resolution";
+
+            if (dropdownPantalla != null && dropdownPantalla.options.Count >= 2)
+            {
+                dropdownPantalla.options[0].text = "Full Screen";
+                dropdownPantalla.options[1].text = "Windowed";
+                dropdownPantalla.captionText.text = dropdownPantalla.options[dropdownPantalla.value].text;
+            }
+
+            if (txtBtnEmpezar != null) txtBtnEmpezar.text = "Start";
+            if (txtBtnVender != null) txtBtnVender.text = "Sell";
+
+            // --- TRADUCCIÓN FIN DE PARTIDA ---
+            if (txtBtnModoInfinito != null) txtBtnModoInfinito.text = "Endless Mode";
+            if (txtBtnNuevaPartidaFin != null) txtBtnNuevaPartidaFin.text = "New Game";
+            if (txtBtnEstadisticas != null) txtBtnEstadisticas.text = "Statistics";
+            if (txtBtnMenuPrincipal != null) txtBtnMenuPrincipal.text = "Main Menu";
+            if (txtTituloEstadisticas != null) txtTituloEstadisticas.text = "Statistics";
+
             TraducirLista(listaTxtUsuario, "Username");
             TraducirLista(listaTxtContrasena, "Password");
             TraducirLista(listaPlaceholderUsuario, "Enter username...");
             TraducirLista(listaPlaceholderContrasena, "Enter password...");
-
-            // Listas Dinámicas (Botones)
-            TraducirLista(listaBtnSalir, "Exit"); 
+            TraducirLista(listaBtnSalir, "Exit");
             TraducirLista(listaBtnCrear, "Create");
         }
     }
@@ -150,18 +182,57 @@ public class GestorIdiomas : MonoBehaviour
         int idioma = PlayerPrefs.GetInt("IdiomaActual", 0);
         string dif = dificultadOriginal.ToLower();
 
+        if (idioma == 0) return (dif == "easy" || dif == "facil") ? "facil" : (dif == "hard" || dif == "dificil") ? "dificil" : "normal";
+        else return (dif == "facil" || dif == "easy") ? "easy" : (dif == "dificil" || dif == "hard") ? "hard" : "normal";
+    }
+
+    public static string ObtenerResultadoTraducido(string resultadoOriginal)
+    {
+        if (string.IsNullOrEmpty(resultadoOriginal)) return "";
+        int idioma = PlayerPrefs.GetInt("IdiomaActual", 0);
+        string res = resultadoOriginal.ToLower();
+
+        if (idioma == 0)
+        {
+            if (res.Contains("victoria") || res.Contains("victory")) return "VICTORIA";
+            if (res.Contains("derrota") || res.Contains("defeat")) return "DERROTA";
+            if (res.Contains("rendicion") || res.Contains("surrender")) return "RENDICIÓN";
+            if (res.Contains("infinito") || res.Contains("endless")) return "INFINITO";
+        }
+        else
+        {
+            if (res.Contains("victoria") || res.Contains("victory")) return "VICTORY";
+            if (res.Contains("derrota") || res.Contains("defeat")) return "DEFEAT";
+            if (res.Contains("rendicion") || res.Contains("surrender")) return "SURRENDER";
+            if (res.Contains("infinito") || res.Contains("endless")) return "ENDLESS";
+        }
+        return resultadoOriginal.ToUpper(); 
+    }
+
+    // --- NUEVA HERRAMIENTA PARA TÍTULO DE FIN DE PARTIDA ---
+    public static string ObtenerTituloFinDePartida(string estado)
+    {
+        int idioma = PlayerPrefs.GetInt("IdiomaActual", 0);
         if (idioma == 0) // ESPAÑOL
         {
-            if (dif == "easy" || dif == "facil") return "facil";
-            if (dif == "normal") return "normal";
-            if (dif == "hard" || dif == "dificil") return "dificil";
+            if (estado == "victoria") return "¡VICTORIA!";
+            if (estado == "derrota") return "¡BASE DESTRUIDA!";
+            if (estado == "rendicion") return "¡TE HAS RENDIDO!";
         }
         else // INGLÉS
         {
-            if (dif == "facil" || dif == "easy") return "easy";
-            if (dif == "normal") return "normal";
-            if (dif == "dificil" || dif == "hard") return "hard";
+            if (estado == "victoria") return "VICTORY!";
+            if (estado == "derrota") return "BASE DESTROYED!";
+            if (estado == "rendicion") return "YOU SURRENDERED!";
         }
-        return dificultadOriginal;
+        return estado;
+    }
+
+    // --- HERRAMIENTA PARA EL BOTÓN VENDER (DINÁMICO) ---
+    public static string ObtenerTextoVenderConPrecio(int precio)
+    {
+        int idioma = PlayerPrefs.GetInt("IdiomaActual", 0);
+        if (idioma == 0) return "Vender\n" + precio.ToString() + " Oro";
+        else return "Sell\n" + precio.ToString() + " Gold";
     }
 }

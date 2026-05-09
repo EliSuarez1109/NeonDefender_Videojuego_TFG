@@ -56,7 +56,7 @@ public class CarruselDificultad : MonoBehaviour
     }
 
     // --- FUNCIÓN QUE CAMBIA LOS GRÁFICOS ---
-    private void ActualizarPantalla()
+    public void ActualizarPantalla()
     {
         // --- ¡MAGIA DEL IDIOMA APLICADA AQUÍ! ---
         // Traducimos visualmente la palabra ANTES de ponerla en la pantalla
