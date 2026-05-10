@@ -144,18 +144,19 @@ public class AdministradorNivel : MonoBehaviour
         Time.timeScale = 0f; 
     }
 
-    public void IniciarModoInfinito()
+ public void IniciarModoInfinito()
     {
         juegoFinalizado = false; 
-        enModoInfinito = true;   
+        enModoInfinito = true;
 
-        if (generadorEnemigos != null)
+        if (generadorEnemigos != null && GestorDatosPartida.instancia != null)
         {
             generadorEnemigos.ActivarModoInfinito();
+            GestorDatosPartida.instancia.ResetearParaModoInfinito();
         }
 
         pantallaFinJuego.SetActive(false); 
-        
+
         if (hudPrincipal != null) hudPrincipal.SetActive(true); 
 
         Time.timeScale = 1f; 

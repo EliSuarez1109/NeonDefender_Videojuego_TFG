@@ -235,4 +235,12 @@ public class GestorIdiomas : MonoBehaviour
         if (idioma == 0) return "Vender\n" + precio.ToString() + " Oro";
         else return "Sell\n" + precio.ToString() + " Gold";
     }
+
+    // --- HERRAMIENTA PARA EL HUD DE RONDAS ---
+    public static string ObtenerEtiquetaInfinita()
+    {
+        int idioma = PlayerPrefs.GetInt("IdiomaActual", 0);
+        // Si es español devuelve "Infinita", si es inglés devuelve "Endless"
+        return (idioma == 0) ? "Infinita" : "Endless";
+    }
 }

@@ -184,18 +184,19 @@ public class GeneradorEnemigos : MonoBehaviour
         }
     }
 
-    public void ActualizarTextoRondas(int numeroDeRondaActual)
+public void ActualizarTextoRondas(int numeroDeRondaActual)
     {
         if (textoContadorRondas != null)
         {
             if (modoInfinitoActivo)
             {
-                // Si estamos en infinito, el texto cambia a este formato
-                textoContadorRondas.text = "Infinita: " + numeroDeRondaActual;
+                // --- CAMBIO AQUÍ: Pedimos la palabra traducida al Gestor ---
+                string etiqueta = GestorIdiomas.ObtenerEtiquetaInfinita();
+                textoContadorRondas.text = etiqueta + ": " + numeroDeRondaActual;
             }
             else
             {
-                // Formato normal (Ej: 10 / 10)
+                // Formato normal (Ej: 1 / 10)
                 int rondaVisual = Mathf.Min(numeroDeRondaActual, rondas.Length);
                 textoContadorRondas.text = rondaVisual + " / " + rondas.Length;
             }
