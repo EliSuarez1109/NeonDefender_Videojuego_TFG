@@ -85,7 +85,6 @@ public class GeneradorEnemigos : MonoBehaviour
         {
             for (int i = 0; i < grupo.cantidad; i++)
             {
-                // Ahora pasamos también el nombre de la BD que creaste
                 CrearEnemigo(grupo.prefabEnemigo, grupo.nombreEnemigoDB);
                 yield return new WaitForSeconds(grupo.tiempoEntreEllos);
             }
@@ -109,8 +108,6 @@ public class GeneradorEnemigos : MonoBehaviour
         if (indiceRondaActual >= rondas.Length && adminNivel != null && !adminNivel.juegoFinalizado)
         {
             adminNivel.MostrarVictoria();
-            // ¡AQUÍ ES DONDE TERMINA EL JUEGO NORMAL! 
-            // Tu pantalla de victoria será la encargada de llamar a ActivarModoInfinito() si el jugador quiere seguir.
         }
         else
         {
@@ -129,7 +126,6 @@ public class GeneradorEnemigos : MonoBehaviour
 
         if (botonEmpezar != null) botonEmpezar.interactable = false;
 
-        // Calculamos cuántos grupos tocan (Nivel 1 = gruposIniciales, Nivel 2 = iniciales + 1, etc.)
         int cantidadGruposEstaRonda = gruposInicialesInfinito + (nivelInfinitoActual - 1);
 
         for (int g = 0; g < cantidadGruposEstaRonda; g++)
@@ -152,14 +148,13 @@ public class GeneradorEnemigos : MonoBehaviour
 
         Debug.Log("¡Oleada Infinita " + nivelInfinitoActual + " superada!");
 
-        // Registramos también las rondas infinitas en la BD
         if (GestorDatosPartida.instancia != null)
         {
             GestorDatosPartida.instancia.RegistrarRondaCompletada();
         }
 
         nivelInfinitoActual++; 
-        ActualizarTextoRondas(nivelInfinitoActual); // Preparamos el texto para la siguiente
+        ActualizarTextoRondas(nivelInfinitoActual);
 
         if (botonEmpezar != null) botonEmpezar.interactable = true;
     }
@@ -184,30 +179,42 @@ public class GeneradorEnemigos : MonoBehaviour
         }
     }
 
-public void ActualizarTextoRondas(int numeroDeRondaActual)
+    public void ActualizarTextoRondas(int numeroDeRondaActual)
     {
         if (textoContadorRondas != null)
         {
             if (modoInfinitoActivo)
             {
-                // --- CAMBIO AQUÍ: Pedimos la palabra traducida al Gestor ---
                 string etiqueta = GestorIdiomas.ObtenerEtiquetaInfinita();
                 textoContadorRondas.text = etiqueta + ": " + numeroDeRondaActual;
             }
             else
             {
-                // Formato normal (Ej: 1 / 10)
                 int rondaVisual = Mathf.Min(numeroDeRondaActual, rondas.Length);
                 textoContadorRondas.text = rondaVisual + " / " + rondas.Length;
             }
         }
     }
 
-    // --- FUNCIÓN PÚBLICA PARA ACTIVAR DESDE LA PANTALLA DE VICTORIA ---
+    // --- FUNCIÓN ORIGINAL (Para tu nivel 1) ---
     public void ActivarModoInfinito()
     {
         modoInfinitoActivo = true;
         ActualizarTextoRondas(nivelInfinitoActual);
-        Debug.Log("Modo Infinito Activado. Esperando a que el jugador pulse Empezar.");
+        Debug.Log("Modo Infinito Activado (Individual).");
+    }
+
+    // --- FUNCIÓN NUEVA (Para tu nivel 3 y futuros niveles con varios caminos) ---
+    public void ActivarModoInfinitoEnTodosLosScripts()
+    {
+        GeneradorEnemigos[] todosLosGeneradores = GetComponents<GeneradorEnemigos>();
+
+        foreach (GeneradorEnemigos generador in todosLosGeneradores)
+        {
+            generador.modoInfinitoActivo = true;
+            generador.ActualizarTextoRondas(generador.nivelInfinitoActual);
+        }
+        
+        Debug.Log("Modo Infinito Activado en los " + todosLosGeneradores.Length + " caminos a la vez.");
     }
 }

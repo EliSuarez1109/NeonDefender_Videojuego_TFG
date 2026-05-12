@@ -8457,9 +8457,9 @@ MonoBehaviour:
       tiempoEntreEllos: 0.3
       tiempoEsperaDespues: 0
       nombreEnemigoDB: 
-  botonEmpezar: {fileID: 0}
-  adminNivel: {fileID: 0}
-  textoContadorRondas: {fileID: 0}
+  botonEmpezar: {fileID: 2007629925}
+  adminNivel: {fileID: 1309895164}
+  textoContadorRondas: {fileID: 610860806}
   modoInfinitoActivo: 0
   gruposInicialesInfinito: 5
   poolGruposInfinitos:
@@ -8755,9 +8755,9 @@ MonoBehaviour:
       tiempoEntreEllos: 0.3
       tiempoEsperaDespues: 0
       nombreEnemigoDB: 
-  botonEmpezar: {fileID: 0}
-  adminNivel: {fileID: 0}
-  textoContadorRondas: {fileID: 0}
+  botonEmpezar: {fileID: 2007629925}
+  adminNivel: {fileID: 1309895164}
+  textoContadorRondas: {fileID: 610860806}
   modoInfinitoActivo: 0
   gruposInicialesInfinito: 5
   poolGruposInfinitos:

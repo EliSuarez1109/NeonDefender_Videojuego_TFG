@@ -10,7 +10,8 @@ public class AdministradorNivel : MonoBehaviour
     public GameObject pantallaEstadisticas; 
     public GameObject pantallaConfiguracion; 
 
-    [Header("Conexiones")]
+    // Ya no usamos esta variable, pero la dejamos por si acaso para no romper conexiones en el Inspector
+    [Header("Conexiones (Ya no es necesaria, busca automáticamente)")]
     public GeneradorEnemigos generadorEnemigos; 
 
     [Header("Botones Especiales")]
@@ -18,7 +19,6 @@ public class AdministradorNivel : MonoBehaviour
 
     [Header("Textos")]
     public TMP_Text txtResultado;
-    // --- NUEVO: Título de la pantalla de Estadísticas ---
     public TMP_Text txtTituloEstadisticas;
 
     [Header("Estado del juego")]
@@ -34,7 +34,6 @@ public class AdministradorNivel : MonoBehaviour
         if (botonModoInfinito != null) botonModoInfinito.SetActive(false);
         if (pantallaConfiguracion != null) pantallaConfiguracion.SetActive(false);
 
-        // --- TRADUCIR EL TÍTULO DE ESTADÍSTICAS AL INICIAR ---
         if (txtTituloEstadisticas != null)
         {
             int idioma = PlayerPrefs.GetInt("IdiomaActual", 0);
@@ -86,7 +85,6 @@ public class AdministradorNivel : MonoBehaviour
         pantallaEstadisticas.SetActive(false); 
         if (pantallaConfiguracion != null) pantallaConfiguracion.SetActive(false); 
 
-        // --- MAGIA DEL IDIOMA ---
         int idioma = PlayerPrefs.GetInt("IdiomaActual", 0);
         txtResultado.text = (idioma == 0) ? "¡BASE DESTRUIDA!" : "BASE DESTROYED!";
         txtResultado.color = Color.red; 
@@ -112,7 +110,6 @@ public class AdministradorNivel : MonoBehaviour
         pantallaEstadisticas.SetActive(false); 
         if (pantallaConfiguracion != null) pantallaConfiguracion.SetActive(false); 
 
-        // --- MAGIA DEL IDIOMA ---
         int idioma = PlayerPrefs.GetInt("IdiomaActual", 0);
         txtResultado.text = (idioma == 0) ? "¡VICTORIA!" : "VICTORY!";
         txtResultado.color = Color.green; 
@@ -137,21 +134,28 @@ public class AdministradorNivel : MonoBehaviour
         pantallaEstadisticas.SetActive(false); 
         if (pantallaConfiguracion != null) pantallaConfiguracion.SetActive(false); 
 
-        // --- MAGIA DEL IDIOMA ---
         int idioma = PlayerPrefs.GetInt("IdiomaActual", 0);
         txtResultado.text = (idioma == 0) ? "¡TE HAS RENDIDO!" : "YOU SURRENDERED!"; 
         txtResultado.color = new Color(1f, 0.5f, 0f); 
         Time.timeScale = 0f; 
     }
 
- public void IniciarModoInfinito()
+    // --- LA ÚNICA FUNCIÓN MODIFICADA ---
+    public void IniciarModoInfinito()
     {
         juegoFinalizado = false; 
         enModoInfinito = true;
 
-        if (generadorEnemigos != null && GestorDatosPartida.instancia != null)
+        // BUSCAMOS TODOS LOS SPAWNERS DEL MAPA AUTOMÁTICAMENTE
+GeneradorEnemigos[] todosLosSpawners = FindObjectsByType<GeneradorEnemigos>(FindObjectsSortMode.None);
+        foreach (GeneradorEnemigos spawner in todosLosSpawners)
         {
-            generadorEnemigos.ActivarModoInfinito();
+            // Activamos el modo infinito en todos los caminos a la vez
+            spawner.ActivarModoInfinitoEnTodosLosScripts();
+        }
+
+        if (GestorDatosPartida.instancia != null)
+        {
             GestorDatosPartida.instancia.ResetearParaModoInfinito();
         }
 
@@ -161,6 +165,7 @@ public class AdministradorNivel : MonoBehaviour
 
         Time.timeScale = 1f; 
     }
+    // ------------------------------------
 
     public void AbrirEstadisticas()
     {
