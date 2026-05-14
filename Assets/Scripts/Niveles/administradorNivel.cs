@@ -27,6 +27,10 @@ public class AdministradorNivel : MonoBehaviour
     
     private bool juegoPausado = false;
 
+    // NUEVO: Creamos una referencia para poder comunicarnos con el script del tiempo
+    [Header("Referencias de Control")]
+    public ControladorTiempo controladorTiempo;
+
     void Start()
     {
         if (hudPrincipal != null) hudPrincipal.SetActive(true);
@@ -62,7 +66,16 @@ public class AdministradorNivel : MonoBehaviour
         }
         else
         {
-            Time.timeScale = 1f; 
+            // NUEVO: Al quitar la pausa, le pedimos al Controlador que aplique la velocidad que tenía guardada
+            if (controladorTiempo != null)
+            {
+                controladorTiempo.ReaplicarVelocidadActual();
+            }
+            else
+            {
+                Time.timeScale = 1f; // Respaldo de seguridad por si olvidas asignar la variable en Unity
+            }
+
             if (pantallaConfiguracion != null) pantallaConfiguracion.SetActive(false); 
         }
     }
@@ -91,7 +104,7 @@ public class AdministradorNivel : MonoBehaviour
         Time.timeScale = 0f; 
     }
 
-public void MostrarVictoria()
+    public void MostrarVictoria()
     {
         if (juegoFinalizado || enModoInfinito) return; 
         
@@ -148,7 +161,7 @@ public void MostrarVictoria()
         enModoInfinito = true;
 
         // BUSCAMOS TODOS LOS SPAWNERS DEL MAPA AUTOMÁTICAMENTE
-GeneradorEnemigos[] todosLosSpawners = FindObjectsByType<GeneradorEnemigos>(FindObjectsSortMode.None);
+        GeneradorEnemigos[] todosLosSpawners = FindObjectsByType<GeneradorEnemigos>(FindObjectsSortMode.None);
         foreach (GeneradorEnemigos spawner in todosLosSpawners)
         {
             // Activamos el modo infinito en todos los caminos a la vez

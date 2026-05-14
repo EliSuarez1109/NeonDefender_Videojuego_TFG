@@ -5213,6 +5213,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 2088177166}
     - target: {fileID: 2317475199118180843, guid: 62db79d7096a146c0884db11239f3cc1, type: 3}
+      propertyPath: controladorTiempo
+      value: 
+      objectReference: {fileID: 2103929301}
+    - target: {fileID: 2317475199118180843, guid: 62db79d7096a146c0884db11239f3cc1, type: 3}
       propertyPath: generadorEnemigos
       value: 
       objectReference: {fileID: 2035053315}

@@ -24,6 +24,21 @@ public class ControladorTiempo : MonoBehaviour
             estadoVelocidad = 0;
         }
 
+        // NUEVO: Llamamos a la lógica centralizada en lugar de tener el switch aquí
+        AplicarEscalaDeTiempo();
+        ActualizarInterfaz();
+    }
+
+    // NUEVO: Función pública para que el Administrador de Nivel restaure la velocidad al quitar la pausa
+    public void ReaplicarVelocidadActual()
+    {
+        AplicarEscalaDeTiempo();
+        ActualizarInterfaz();
+    }
+
+    // NUEVO: Centralizamos el switch aquí para no duplicar código
+    private void AplicarEscalaDeTiempo()
+    {
         switch (estadoVelocidad)
         {
             case 0:
@@ -36,8 +51,6 @@ public class ControladorTiempo : MonoBehaviour
                 Time.timeScale = 2f; // tiempo x2
                 break;
         }
-
-        ActualizarInterfaz();
     }
 
     void ActualizarInterfaz()
