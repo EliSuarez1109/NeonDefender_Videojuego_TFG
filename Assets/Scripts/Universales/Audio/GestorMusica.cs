@@ -15,6 +15,7 @@ public class GestorMusica : MonoBehaviour
     public AudioClip[] listaCanciones; 
     
     private int indiceActual = 0;
+    private bool cambiandoCancion = false;
 
     // Singletone 
     void Awake()
@@ -55,11 +56,21 @@ public class GestorMusica : MonoBehaviour
         }
     }
 
-    void Update()
+void Update()
     {
-        if (!fuenteMusica.isPlaying && listaCanciones.Length > 0)
+        if (listaCanciones.Length == 0 || fuenteMusica == null) return;
+
+        // Mantener cancion aunque se cambie de pantalla
+        if (!Application.isFocused) return;
+
+        if (!fuenteMusica.isPlaying && !cambiandoCancion)
         {
-            SiguienteCancion();
+            cambiandoCancion = true; 
+            Invoke("SiguienteCancion", 1f); 
+        }
+        else if (fuenteMusica.isPlaying)
+        {
+            cambiandoCancion = false; 
         }
     }
 
