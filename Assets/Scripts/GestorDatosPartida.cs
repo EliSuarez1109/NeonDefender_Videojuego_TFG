@@ -52,6 +52,7 @@ public class GestorDatosPartida : MonoBehaviour
     public void RegistrarDanoRecibido(float cantidad) => datosPartida.RegistrarDanoRecibido(cantidad);
     public void RegistrarDanoInfligido(float cantidad) => datosPartida.RegistrarDanoInfligido(cantidad);
     public void RegistrarRondaCompletada() => datosPartida.RegistrarRondaCompletada();
+    public void IniciarNuevaRonda() => datosPartida.IniciarNuevaRonda();
     public void EstablecerEstado(string estado) => datosPartida.EstablecerEstado(estado);
     public void EstablecerNivel(string nombreNivel) => datosPartida.EstablecerNivel(nombreNivel);
 

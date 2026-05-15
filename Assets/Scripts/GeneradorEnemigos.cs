@@ -68,6 +68,11 @@ public class GeneradorEnemigos : MonoBehaviour
     // Gestiona la creación de enemigos en las rondas normales 
     IEnumerator SpawnRonda(Ronda rondaActual)
     {
+        if (GestorDatosPartida.instancia != null)
+        {
+            GestorDatosPartida.instancia.IniciarNuevaRonda();
+        }
+
         if (botonEmpezar != null) botonEmpezar.interactable = false;
 
         foreach (GrupoEnemigos grupo in rondaActual.grupos)
@@ -107,6 +112,11 @@ public class GeneradorEnemigos : MonoBehaviour
     // Funciona igual que la ronda normal, pero escoge grupos de enemigos al azar de forma infinita
     IEnumerator SpawnRondaInfinita()
     {
+        if (GestorDatosPartida.instancia != null)
+        {
+            GestorDatosPartida.instancia.IniciarNuevaRonda();
+        }
+
         if (poolGruposInfinitos == null || poolGruposInfinitos.Length == 0)
         {
             yield break;

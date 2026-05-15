@@ -14,6 +14,9 @@ public class PartidaJSON
     public int oro_ganado;
     public int oro_gastado;
     public int rondas_completadas;
+
+    [NonSerialized]
+    private bool rondaContada;
     
     public List<DetalleTorre> torres = new List<DetalleTorre>();
     public List<DetalleEnemigo> enemigos = new List<DetalleEnemigo>();
@@ -116,7 +119,19 @@ public class PartidaJSON
     // Incrementa el contador de rondas superadas con éxito
     public void RegistrarRondaCompletada()
     {
+        if (rondaContada)
+        {
+            return;
+        }
+
         rondas_completadas++;
+        rondaContada = true;
+    }
+
+    // Prepara el contador para una nueva ronda y evita contar múltiples veces la misma ronda
+    public void IniciarNuevaRonda()
+    {
+        rondaContada = false;
     }
 
     // Actualiza el resultado de la partida (victoria, derrota, etc.) priorizando el estado infinito si está activo
