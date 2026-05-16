@@ -52,7 +52,7 @@ public class GestorConfiguracion : MonoBehaviour
                 Screen.fullScreenMode = FullScreenMode.ExclusiveFullScreen;
                 break;
             case 1:
-                Screen.fullScreenMode = FullScreenMode.FullScreenWindow;
+                Screen.fullScreenMode = FullScreenMode.Windowed;
                 break;
         }
     }
