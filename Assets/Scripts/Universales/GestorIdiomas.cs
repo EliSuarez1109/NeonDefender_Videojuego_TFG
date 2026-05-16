@@ -196,7 +196,7 @@ public class GestorIdiomas : MonoBehaviour
             if (txtDescPyxerion != null) txtDescPyxerion.text = "Corredor que sacrifica un poco de velocidad a cambio de mayor supervivencia.";
             if (txtDescPyxerarch != null) txtDescPyxerarch.text = "Líder escurridizo que mantiene un paso rápido mientras soporta daño considerable.";
             if (txtDescZhax != null) txtDescZhax.text = "Gigante acorazado de movimiento lento con una gran cantidad de vida inicial.";
-            if (txtDescZhaxeris != null) txtDescZhaxeris.text = "Coloso de as siege con blindaje pesado que requiere fuego concentrado para caer.";
+            if (txtDescZhaxeris != null) txtDescZhaxeris.text = "Coloso con blindaje pesado que requiere fuego concentrado para caer.";
             if (txtDescZhaxarian != null) txtDescZhaxarian.text = "Fortaleza móvil extremadamente lenta, pero con una resistencia titánica.";
 
             if (txtStatsVelth != null) txtStatsVelth.text = "Velocidad: 175 - Vida: 100 - Daño: 75 - Oro: 20";
@@ -277,7 +277,7 @@ public class GestorIdiomas : MonoBehaviour
             if (txtDescPyxerion != null) txtDescPyxerion.text = "Runner that sacrifices some speed for greater survivability.";
             if (txtDescPyxerarch != null) txtDescPyxerarch.text = "Elusive leader that maintains a fast pace while enduring considerable damage.";
             if (txtDescZhax != null) txtDescZhax.text = "Slow-moving armored giant with a large initial health pool.";
-            if (txtDescZhaxeris != null) txtDescZhaxeris.text = "Siege colossus with heavy armor that requires concentrated fire to fall.";
+            if (txtDescZhaxeris != null) txtDescZhaxeris.text = "Colossus with heavy armor that requires concentrated fire to fall.";
             if (txtDescZhaxarian != null) txtDescZhaxarian.text = "Extremely slow mobile fortress with titanic resistance.";
 
             if (txtStatsVelth != null) txtStatsVelth.text = "Speed: 175 - Health: 100 - Damage: 75 - Gold: 20";

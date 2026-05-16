@@ -11,7 +11,7 @@ public class GestorDatosPartida : MonoBehaviour
     public PartidaJSON datosPartida = new PartidaJSON();
 
     [Header("AWS Guardado de Partida")]
-    public string savePartidaAPI = "https://q2v7qbfux6.execute-api.us-east-1.amazonaws.com/default/L_Unity_Save_TD";
+    public string savePartidaAPI = "https://zne23sxln0.execute-api.us-east-1.amazonaws.com/partidas_guardar";
 
     // Configura el Singleton asegurando que este gestor sobreviva a las cargas de nuevas escenas
     void Awake()
