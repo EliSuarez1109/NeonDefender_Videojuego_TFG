@@ -7,7 +7,7 @@
 
 ## Descripción
 
-NeonTD es un proyecto de juego tipo Tower Defense creado en Unity. Está ambientado en un universo futurista con identidad visual de `Neon Defender`, fundamentada en una estética cyberpunk y de ciencia ficción, caracterizada por una paleta de tonos oscuros en contraste con efectos de iluminación neón.
+Neon Defender es un proyecto de juego tipo Tower Defense creado en Unity. Está ambientado en un universo futurista con identidad visual, fundamentada en una estética cyberpunk y de ciencia ficción, caracterizada por una paleta de tonos oscuros en contraste con efectos de iluminación neón.
 
 Incluye:
 
@@ -115,14 +115,14 @@ Incluye:
 
 1. Instalar Unity Editor `6000.3.10f1`.
 2. Instalar Unity Hub y agregar la versión indicada si está disponible.
-3. Abrir el proyecto desde la carpeta raíz `c:\GitHub\NeonTD`.
+3. Abrir el proyecto desde la carpeta raíz `c:\GitHub\NeonDefender_Videojuego_TFG`.
 
 ### Pasos para abrir
 
 1. Clona o descarga el repositorio:
    ```bash
    git clone <url-del-repositorio>
-   cd NeonTD
+   cd NeonDefender_Videojuego_TFG
    ```
 2. Abre el proyecto con Unity Hub seleccionando la carpeta raíz.
 3. Deja que Unity importe los paquetes y regenere la carpeta `Library` si es necesario.
